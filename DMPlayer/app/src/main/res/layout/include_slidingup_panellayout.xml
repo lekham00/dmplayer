@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_white_1000"
+    android:orientation="vertical">
+
+    <com.lk.dmplayer.slidinguppanelhelper.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        sothree:umanoOverlay="true"
+        sothree:umanoPanelHeight="?attr/actionBarSize"
+        sothree:umanoParalaxOffset="0dp"
+        sothree:umanoShadowHeight="4dp"
+        >
+
+        <!--Main Content-->
+        <include
+            android:id="@+id/include_slidingpanel_childone"
+            layout="@layout/include_slidingpanel_childone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--Sliding layout-->
+        <include
+            layout="@layout/include_slidingpanel_childtwo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.lk.dmplayer.slidinguppanelhelper.SlidingUpPanelLayout>
+
+
+</LinearLayout>

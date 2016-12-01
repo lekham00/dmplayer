@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayoutDrawerItem"
+    android:layout_width="match_parent"
+    android:layout_height="48dp">
+
+    <FrameLayout
+        android:id="@+id/item_row"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/imageViewDrawerIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_action_design" />
+
+        <TextView
+            android:id="@+id/textViewDrawerItemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="72dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="72dp"
+            android:fontFamily="sans-serif-medium"
+            android:singleLine="true"
+            android:text="fdfsdfsdf"
+            android:textSize="14sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/item_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginTop="1dp"
+        android:background="@color/md_divider">
+
+    </FrameLayout>
+</RelativeLayout>
