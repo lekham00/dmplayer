@@ -21,13 +21,13 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 /**
  * Created by dlkham on 12/2/2016.
  */
-class MyRecyclerAdapter extends CursorRecyclerViewAdapter<MyRecyclerAdapter.ViewHolder> {
+public class MyRecyclerAdapter extends CursorRecyclerViewAdapter<MyRecyclerAdapter.ViewHolder> {
 
     private DisplayImageOptions options;
     private ImageLoader imageLoader = ImageLoader.getInstance();
     private AsyncQueryHandler asyncQueryHandler;
 
-    protected MyRecyclerAdapter(Context context, Cursor cursor) {
+    public MyRecyclerAdapter(Context context, Cursor cursor) {
         super(context, cursor);
         this.options = new DisplayImageOptions.Builder().showImageOnLoading(R.mipmap.bg_default_album_art).showImageForEmptyUri(R.mipmap.bg_default_album_art).showImageOnFail(R.mipmap.bg_default_album_art).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).bitmapConfig(Bitmap.Config.RGB_565).build();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
@@ -40,6 +40,10 @@ class MyRecyclerAdapter extends CursorRecyclerViewAdapter<MyRecyclerAdapter.View
         viewHolder.mTextViewArtistName.setText(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ARTIST)));
         String contentURI = "content://media/external/audio/albumart/" + cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Albums._ID));
         imageLoader.displayImage(contentURI, viewHolder.mIcon, options);
+    }
+
+    public AsyncQueryHandler getAsyncQueryHandler() {
+        return asyncQueryHandler;
     }
 
     @Override
@@ -60,8 +64,6 @@ class MyRecyclerAdapter extends CursorRecyclerViewAdapter<MyRecyclerAdapter.View
 //            ini(cursor);
         }
     }
-
-
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
