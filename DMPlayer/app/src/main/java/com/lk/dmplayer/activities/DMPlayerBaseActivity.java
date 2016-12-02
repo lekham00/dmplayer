@@ -237,7 +237,7 @@ public class DMPlayerBaseActivity extends ActionBarActivity implements View.OnCl
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         sharedPreferences.edit().putInt("FRAGMENT", position).apply();
         fragmentTransaction.replace(R.id.fragment, fragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
         getSupportActionBar().setTitle(title);
 
     }

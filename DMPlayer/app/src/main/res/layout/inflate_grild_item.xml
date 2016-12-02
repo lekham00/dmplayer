@@ -5,6 +5,7 @@
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="4dp"
     app:cardElevation="10dp"
+    android:layout_margin="8dp"
     android:layout_height="200dp">
 
     <RelativeLayout
@@ -14,7 +15,7 @@
         <ImageView
             android:id="@+id/icon"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_above="@+id/re_layout_text"
             android:scaleType="centerCrop"
             android:src="@mipmap/bg_default_album_art" />
@@ -32,6 +33,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:singleLine="true"
+                android:textSize="15sp"
+                android:textColor="?colorPrimary"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -41,6 +44,8 @@
                 android:layout_below="@id/item_line1"
                 android:ellipsize="marquee"
                 android:singleLine="true"
+                android:textSize="12sp"
+                android:textColor="?colorPrimary"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </RelativeLayout>
     </RelativeLayout>
