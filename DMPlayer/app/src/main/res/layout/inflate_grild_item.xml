@@ -10,7 +10,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/icon"
@@ -24,8 +24,9 @@
             android:id="@+id/re_layout_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_alignParentBottom="true"
-            android:layout_margin="5dp">
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/item_line1"
@@ -34,19 +35,34 @@
                 android:ellipsize="marquee"
                 android:singleLine="true"
                 android:textSize="15sp"
-                android:textColor="?colorPrimary"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="?colorPrimary" />
 
-            <TextView
-                android:id="@+id/item_line2"
+            <LinearLayout
+                android:id="@+id/llBottom"
+                android:layout_below="@id/item_line1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/item_line1"
-                android:ellipsize="marquee"
-                android:singleLine="true"
-                android:textSize="12sp"
-                android:textColor="?colorPrimary"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/item_line2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
+                    android:textColor="?colorPrimary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/item_line3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/item_line1"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
+                    android:textColor="?colorPrimary"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

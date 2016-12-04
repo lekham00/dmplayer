@@ -42,7 +42,7 @@ public class PhoneMediaControl {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 if (phoneMediaControlINterface != null)
-                    phoneMediaControlINterface.loadSongsComplete(songDetails);
+                    phoneMediaControlINterface.loadSongsComplete(songDetails,cursor);
             }
         };
         task.execute();
@@ -102,6 +102,6 @@ public class PhoneMediaControl {
     }
 
     public interface PhoneMediaControlINterface {
-        public void loadSongsComplete(ArrayList<SongDetail> songDetails);
+        public void loadSongsComplete(ArrayList<SongDetail> songDetails, Cursor cursor);
     }
 }

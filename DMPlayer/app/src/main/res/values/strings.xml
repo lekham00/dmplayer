@@ -50,4 +50,11 @@
         <item>@mipmap/ic_content_send</item>
     </array>
     <string name="artist_duration" formatted="false">%1$s | %2$s</string>
+    <string name="one_album" formatted="false">%1$s Album</string>
+    <string name="more_album" formatted="false">%1$s Albums</string>
+    <string name="one_song" formatted="false">%1$s Song</string>
+    <string name="more_song" formatted="false">%1$s Songs</string>
+
+    <!--The fast scroll thumb will show one character from this string depending on the position in the list -->
+    <string name="fast_scroll_alphabet">\u0020ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 </resources>

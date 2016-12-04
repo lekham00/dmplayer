@@ -1,6 +1,7 @@
 package com.lk.dmplayer.manager;
 
 import android.content.AsyncQueryHandler;
+import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,14 +22,16 @@ import com.lk.dmplayer.phonemidea.DMPlayerUtility;
 /**
  * Created by dlkham on 12/2/2016.
  */
-public class LKBaseChildFragment extends Fragment {
-    public static final String TAG = "ChildFragmentAlbum";
+public abstract class LKBaseChildFragment extends Fragment {
+    public static final String TAG = "LKBaseChildFragment";
     private RecyclerView mRecyclerView;
     private MyRecyclerAdapter adapter = null;
-    private Cursor cursorAlbum = null;
+    private Cursor cursorChild = null;
+    private AsyncQueryHandler asyncQueryHandler;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.asyncQueryHandler = new QueryHandler(getContext().getContentResolver());
     }
 
     @Nullable
@@ -38,6 +41,17 @@ public class LKBaseChildFragment extends Fragment {
         setUpView(view);
         return view;
     }
+    private class QueryHandler extends AsyncQueryHandler {
+        public QueryHandler(ContentResolver cr) {
+            super(cr);
+        }
+
+        @Override
+        protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+            super.onQueryComplete(token, cookie, cursor);
+            changeCursor(cursor);
+        }
+    }
     private void setUpView(View view) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -46,31 +60,38 @@ public class LKBaseChildFragment extends Fragment {
     private void populateData() {
         adapter = (MyRecyclerAdapter) getActivity().getLastCustomNonConfigurationInstance();
         if (adapter == null) {
-            adapter = new MyRecyclerAdapter(getActivity(),cursorAlbum);
+            adapter = new MyRecyclerAdapter(getContext(), cursorChild);
+            adapter.setFragment(getFragment());
             mRecyclerView.setAdapter(adapter);
-            getAlbumCursor(adapter.getAsyncQueryHandler());
+            onCursor(asyncQueryHandler);
         } else {
             mRecyclerView.setAdapter(adapter);
-            cursorAlbum = adapter.getCursor();
-            if(cursorAlbum != null)
-                ini(cursorAlbum);
+            cursorChild = adapter.getCursor();
+            if(cursorChild != null)
+                changeCursor(cursorChild);
         }
     }
-    private Cursor getAlbumCursor(AsyncQueryHandler asyncQueryHandler) {
-        String[] column = {MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM, MediaStore.Audio.Albums.ARTIST, MediaStore.Audio.Albums.ALBUM_ART};
-        Cursor cursor = null;
-        Uri uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
-        if (asyncQueryHandler != null) {
-            asyncQueryHandler.startQuery(0, null, uri, column, null, null, MediaStore.Audio.Albums.DEFAULT_SORT_ORDER);
-        } else {
-            cursor = DMPlayerUtility.query(getContext(), uri, column, null, null, MediaStore.Audio.Albums.DEFAULT_SORT_ORDER, 0);
-        }
-        return cursor;
-    }
-
-    private void ini(Cursor cursor) {
+    public abstract Cursor onCursor(AsyncQueryHandler asyncQueryHandler);
+    public abstract int getIndexLine1(Cursor cursor);
+    public abstract int getIndexLine2(Cursor cursor);
+    public abstract int getIndexLine3(Cursor cursor);
+    public abstract String getContentURI(Cursor cursor);
+    public abstract Fragment getFragment();
+    private void changeCursor(Cursor cursor) {
         if (getActivity() == null)
             return;
-        adapter.changeCursor(cursor);
+        if (getActivity().isFinishing() && cursor != null) {
+            cursor.close();
+            cursor = null;
+        }
+        adapter.setContentURI(getContentURI(cursor));
+        adapter.setIndexCursorLine1(getIndexLine1(cursor));
+        adapter.setIndexCursorLine2(getIndexLine2(cursor));
+        if (cursor != cursorChild) {
+            cursorChild = cursor;
+            adapter.changeCursor(cursor);
+        }
+
+
     }
 }
