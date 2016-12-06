@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.lk.dmplayer.R;
 import com.lk.dmplayer.activities.DMPlayerBaseActivity;
+import com.lk.dmplayer.activities.MainActivity;
 import com.lk.dmplayer.manager.MediaController;
 import com.lk.dmplayer.models.SongDetail;
 import com.lk.dmplayer.phonemidea.DMPlayerUtility;
@@ -223,7 +224,7 @@ public class FragmentAllSongs extends Fragment {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((DMPlayerBaseActivity) getActivity()).loadSongDetails(songDetail);
+                    ((MainActivity) getActivity()).loadSongDetails(songDetail);
                     MediaController.getInstance().setPlayerList(songAllDetails, songDetail);
                 }
             });

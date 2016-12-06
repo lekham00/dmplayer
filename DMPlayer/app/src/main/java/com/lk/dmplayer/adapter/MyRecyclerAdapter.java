@@ -1,8 +1,10 @@
 package com.lk.dmplayer.adapter;
 
+import android.app.Activity;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
@@ -18,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lk.dmplayer.R;
+import com.lk.dmplayer.activities.AlbumAndArtisDetailsActivity;
 import com.lk.dmplayer.childfragment.ChildFragmentAlbum;
 import com.lk.dmplayer.childfragment.ChildFragmentArtists;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -97,7 +100,8 @@ public class MyRecyclerAdapter extends CursorRecyclerViewAdapter<MyRecyclerAdapt
         this.indexCursorLine3 = indexCursorLine3;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mIcon;
         private TextView mTextViewLine1;
         private TextView mTextViewLine2;
@@ -107,10 +111,18 @@ public class MyRecyclerAdapter extends CursorRecyclerViewAdapter<MyRecyclerAdapt
         public ViewHolder(View view) {
             super(view);
             mIcon = (ImageView) view.findViewById(R.id.icon);
+            mIcon.setOnClickListener(this);
             mTextViewLine1 = (TextView) view.findViewById(R.id.item_line1);
             mTextViewLine2 = (TextView) view.findViewById(R.id.item_line2);
             mTextViewLine3 = (TextView) view.findViewById(R.id.item_line3);
             mLlBottom = (LinearLayout) view.findViewById(R.id.llBottom);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, AlbumAndArtisDetailsActivity.class);
+            ((Activity)context).startActivity(intent);
+            ((Activity)context).overridePendingTransition(0,0);
         }
     }
 }
