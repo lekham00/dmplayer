@@ -3,6 +3,7 @@ package com.lk.dmplayer.childfragment;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -19,9 +20,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lk.dmplayer.R;
+import com.lk.dmplayer.activities.AlbumAndArtisDetailsActivity;
 import com.lk.dmplayer.adapter.CursorRecyclerViewAdapter;
 import com.lk.dmplayer.manager.LKBaseChildFragment;
 import com.lk.dmplayer.phonemidea.DMPlayerUtility;
+import com.lk.dmplayer.phonemidea.PhoneMediaControl;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -84,5 +87,17 @@ public class ChildFragmentAlbum extends LKBaseChildFragment {
     @Override
     public Fragment getFragment() {
         return this;
+    }
+
+    @Override
+    public void onMoveDetail(long id, int position) {
+        Intent intent = new Intent(getContext(), AlbumAndArtisDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putLong(AlbumAndArtisDetailsActivity.ID, id);
+        bundle.putInt(AlbumAndArtisDetailsActivity.POSITION, position);
+        bundle.putInt(AlbumAndArtisDetailsActivity.TAGFOR, PhoneMediaControl.SonLoadFor.Album.ordinal());
+        intent.putExtras(bundle);
+        startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
     }
 }

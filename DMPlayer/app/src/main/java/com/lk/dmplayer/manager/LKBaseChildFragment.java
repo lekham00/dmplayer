@@ -28,6 +28,10 @@ public abstract class LKBaseChildFragment extends Fragment {
     private MyRecyclerAdapter adapter = null;
     private Cursor cursorChild = null;
     private AsyncQueryHandler asyncQueryHandler;
+     protected View view;
+    public interface OnClickListener {
+        public void onClick(long id, int position);
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +41,7 @@ public abstract class LKBaseChildFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragmentchild, null);
+         view = inflater.inflate(R.layout.fragmentchild, null);
         setUpView(view);
         return view;
     }
@@ -60,7 +64,7 @@ public abstract class LKBaseChildFragment extends Fragment {
     private void populateData() {
         adapter = (MyRecyclerAdapter) getActivity().getLastCustomNonConfigurationInstance();
         if (adapter == null) {
-            adapter = new MyRecyclerAdapter(getContext(), cursorChild);
+            adapter = new MyRecyclerAdapter(getContext(), cursorChild, onClickListener);
             adapter.setFragment(getFragment());
             mRecyclerView.setAdapter(adapter);
             onCursor(asyncQueryHandler);
@@ -77,6 +81,7 @@ public abstract class LKBaseChildFragment extends Fragment {
     public abstract int getIndexLine3(Cursor cursor);
     public abstract String getContentURI(Cursor cursor);
     public abstract Fragment getFragment();
+    public abstract void onMoveDetail(long id, int position);
     private void changeCursor(Cursor cursor) {
         if (getActivity() == null)
             return;
@@ -91,7 +96,12 @@ public abstract class LKBaseChildFragment extends Fragment {
             cursorChild = cursor;
             adapter.changeCursor(cursor);
         }
-
-
     }
+    OnClickListener onClickListener = new OnClickListener() {
+        @Override
+        public void onClick(long id,int position) {
+            onMoveDetail(id, position);
+        }
+
+    };
 }

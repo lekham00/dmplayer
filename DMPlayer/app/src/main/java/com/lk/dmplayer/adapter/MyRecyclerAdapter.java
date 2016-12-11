@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +24,7 @@ import com.lk.dmplayer.R;
 import com.lk.dmplayer.activities.AlbumAndArtisDetailsActivity;
 import com.lk.dmplayer.childfragment.ChildFragmentAlbum;
 import com.lk.dmplayer.childfragment.ChildFragmentArtists;
+import com.lk.dmplayer.manager.LKBaseChildFragment;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -40,12 +42,14 @@ public class MyRecyclerAdapter extends CursorRecyclerViewAdapter<MyRecyclerAdapt
     private String contentURI;
     Context context;
     private Fragment fragment;
+    private LKBaseChildFragment.OnClickListener onClickListener;
 
-    public MyRecyclerAdapter(Context context, Cursor cursor) {
+    public MyRecyclerAdapter(Context context, Cursor cursor, LKBaseChildFragment.OnClickListener onClickListener) {
         super(context, cursor);
         this.options = new DisplayImageOptions.Builder().showImageOnLoading(R.mipmap.bg_default_album_art).showImageForEmptyUri(R.mipmap.bg_default_album_art).showImageOnFail(R.mipmap.bg_default_album_art).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).bitmapConfig(Bitmap.Config.RGB_565).build();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         this.context = context;
+        this.onClickListener = onClickListener;
     }
 
     @Override
@@ -119,10 +123,12 @@ public class MyRecyclerAdapter extends CursorRecyclerViewAdapter<MyRecyclerAdapt
         }
 
         @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(context, AlbumAndArtisDetailsActivity.class);
-            ((Activity)context).startActivity(intent);
-            ((Activity)context).overridePendingTransition(0,0);
+        public void onClick(View view) {
+            onClickListener.onClick(getId(getLayoutPosition()), getLayoutPosition());
         }
+    }
+
+    public long getId(int position) {
+        return getItemId(position);
     }
 }

@@ -2,6 +2,7 @@ package com.lk.dmplayer.childfragment;
 
 import android.content.AsyncQueryHandler;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,10 +12,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.lk.dmplayer.R;
+import com.lk.dmplayer.activities.AlbumAndArtisDetailsActivity;
 import com.lk.dmplayer.manager.LKBaseChildFragment;
 import com.lk.dmplayer.phonemidea.DMPlayerUtility;
+import com.lk.dmplayer.phonemidea.PhoneMediaControl;
 
 /**
  * Created by dlkham on 12/2/2016.
@@ -65,6 +69,18 @@ public class ChildFragmentArtists extends LKBaseChildFragment {
     @Override
     public Fragment getFragment() {
         return this;
+    }
+
+    @Override
+    public void onMoveDetail(long id, int position) {
+        Intent intent = new Intent(getContext(), AlbumAndArtisDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putLong(AlbumAndArtisDetailsActivity.ID, id);
+        bundle.putInt(AlbumAndArtisDetailsActivity.POSITION, position);
+        bundle.putInt(AlbumAndArtisDetailsActivity.TAGFOR, PhoneMediaControl.SonLoadFor.Artis.ordinal());
+        intent.putExtras(bundle);
+        startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
     }
 
     public static ChildFragmentArtists newInstance(Context context) {

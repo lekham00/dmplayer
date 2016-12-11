@@ -48,7 +48,7 @@ public class PhoneMediaControl {
         task.execute();
     }
 
-    private final String[] projectionSongs = {MediaStore.Audio.Media._ID, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DURATION};
+    private final String[] projectionSongs = {MediaStore.Audio.Media._ID, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DURATION};
 
     private ArrayList<SongDetail> getList(Context context, long id, SonLoadFor sonLoadFor, String path) {
         ArrayList<SongDetail> songDetails = new ArrayList<>();
@@ -60,6 +60,10 @@ public class PhoneMediaControl {
                 songDetails = getSongFromCursor(cursor);
                 break;
             case Album:
+                selection = MediaStore.Audio.Media.ALBUM_ID + "=" + id + " AND " + MediaStore.Audio.Media.IS_MUSIC + "=1";
+                sortOrder = MediaStore.Audio.Media.DEFAULT_SORT_ORDER;
+                cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projectionSongs, selection, null, sortOrder);
+                songDetails = getSongFromCursor(cursor);
                 break;
             case Artis:
                 break;
@@ -85,10 +89,11 @@ public class PhoneMediaControl {
                 int albumID = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
                 String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                 String display_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
                 String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                 String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
-                songDetails.add(new SongDetail(id, albumID, artist, title, path, display_name, duration));
+                songDetails.add(new SongDetail(id, albumID, artist, album, title, path, display_name, duration));
             }
 
         }
