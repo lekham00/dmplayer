@@ -28,13 +28,13 @@ public class ChildFragmentArtists extends LKBaseChildFragment {
     public Fragment fragment;
     @Override
     public Cursor onCursor(AsyncQueryHandler asyncQueryHandler) {
-        String[] column = {MediaStore.Audio.Artists._ID, MediaStore.Audio.Artists.ARTIST, MediaStore.Audio.Artists.NUMBER_OF_ALBUMS, MediaStore.Audio.Artists.NUMBER_OF_TRACKS, MediaStore.Audio.Artists._ID};
+        String[] column = {MediaStore.Audio.Artists._ID, MediaStore.Audio.Artists.ARTIST, MediaStore.Audio.Artists.NUMBER_OF_ALBUMS, MediaStore.Audio.Artists.NUMBER_OF_TRACKS};
         Uri uri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
         Cursor cursor = null;
         if (asyncQueryHandler != null) {
-            asyncQueryHandler.startQuery(0, null, uri, column, null, null, MediaStore.Audio.Artists.DEFAULT_SORT_ORDER);
+            asyncQueryHandler.startQuery(0, null, uri, column, null, null, MediaStore.Audio.Artists.ARTIST_KEY);
         } else {
-            cursor = DMPlayerUtility.query(getActivity(), uri, column, null, null, MediaStore.Audio.Artists.DEFAULT_SORT_ORDER, 0);
+            cursor = DMPlayerUtility.query(getActivity(), uri, column, null, null, MediaStore.Audio.Artists.ARTIST_KEY, 0);
         }
 
         return cursor;
@@ -72,12 +72,12 @@ public class ChildFragmentArtists extends LKBaseChildFragment {
     }
 
     @Override
-    public void onMoveDetail(long id, int position) {
+    public void onMoveDetail(long id, String title) {
         Intent intent = new Intent(getContext(), AlbumAndArtisDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putLong(AlbumAndArtisDetailsActivity.ID, id);
-        bundle.putInt(AlbumAndArtisDetailsActivity.POSITION, position);
         bundle.putInt(AlbumAndArtisDetailsActivity.TAGFOR, PhoneMediaControl.SonLoadFor.Artis.ordinal());
+        bundle.putString(AlbumAndArtisDetailsActivity.TITLE, title);
         intent.putExtras(bundle);
         startActivity(intent);
         getActivity().overridePendingTransition(0, 0);

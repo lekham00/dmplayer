@@ -57,9 +57,9 @@ public class MyRecyclerAdapter extends CursorRecyclerViewAdapter<MyRecyclerAdapt
         if (fragment instanceof ChildFragmentArtists) {
             updateUITextView(viewHolder.mTextViewLine1, indexCursorLine1, cursor.getString(indexCursorLine1), cursor);
             int album = cursor.getInt(indexCursorLine2);
-            updateUITextView(viewHolder.mTextViewLine2, indexCursorLine2, album == 1 ? context.getResources().getString(R.string.one_album, 1) : context.getResources().getString(R.string.more_album, album), cursor);
+            updateUITextView(viewHolder.mTextViewLine2, indexCursorLine2, album == 1 ? context.getResources().getString(R.string.one_album, String.valueOf(1)): context.getResources().getString(R.string.more_album, String.valueOf(album)), cursor);
             int song = cursor.getInt(indexCursorLine3);
-            updateUITextView(viewHolder.mTextViewLine3, indexCursorLine3, " / " + (song == 1 ? context.getResources().getString(R.string.one_song, 1) : context.getResources().getString(R.string.more_song, song)), cursor);
+            updateUITextView(viewHolder.mTextViewLine3, indexCursorLine3, " / " + (song == 1 ? context.getResources().getString(R.string.one_song, String.valueOf(1)) : context.getResources().getString(R.string.more_song, String.valueOf(song))), cursor);
             viewHolder.mIcon.setImageResource(R.mipmap.illo_default_artistradio_portrait);
         } else {
             updateUITextView(viewHolder.mTextViewLine1, indexCursorLine1, null, cursor);
@@ -115,16 +115,16 @@ public class MyRecyclerAdapter extends CursorRecyclerViewAdapter<MyRecyclerAdapt
         public ViewHolder(View view) {
             super(view);
             mIcon = (ImageView) view.findViewById(R.id.icon);
-            mIcon.setOnClickListener(this);
             mTextViewLine1 = (TextView) view.findViewById(R.id.item_line1);
             mTextViewLine2 = (TextView) view.findViewById(R.id.item_line2);
             mTextViewLine3 = (TextView) view.findViewById(R.id.item_line3);
             mLlBottom = (LinearLayout) view.findViewById(R.id.llBottom);
+            view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            onClickListener.onClick(getId(getLayoutPosition()), getLayoutPosition());
+            onClickListener.onClick(getId(getLayoutPosition()),((TextView)view.findViewById(R.id.item_line1)).getText().toString().trim());
         }
     }
 

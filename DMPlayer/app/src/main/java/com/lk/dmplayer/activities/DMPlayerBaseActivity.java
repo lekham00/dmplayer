@@ -53,7 +53,7 @@ import java.util.ArrayList;
  */
 public class DMPlayerBaseActivity extends MainActivity  {
 
-    private Toolbar mToolbar;
+
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private RecyclerView recyclerViewDrawer;
@@ -64,7 +64,6 @@ public class DMPlayerBaseActivity extends MainActivity  {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_dmplayerbase);
         super.onCreate(savedInstanceState);
-        toolBarStatusBar();
         navigationDrawer();
         setFragment(0);
     }
@@ -84,11 +83,6 @@ public class DMPlayerBaseActivity extends MainActivity  {
         }
     }
 
-    private void toolBarStatusBar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-
-    }
 
     private void navigationDrawer() {
 

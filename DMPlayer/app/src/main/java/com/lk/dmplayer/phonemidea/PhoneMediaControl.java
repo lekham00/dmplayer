@@ -2,6 +2,7 @@ package com.lk.dmplayer.phonemidea;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 
@@ -66,10 +67,17 @@ public class PhoneMediaControl {
                 songDetails = getSongFromCursor(cursor);
                 break;
             case Artis:
+                selection = MediaStore.Audio.Media.ARTIST_ID + "=" + id + " AND " + MediaStore.Audio.Media.IS_MUSIC + "=1";
+                sortOrder = MediaStore.Audio.Media.ARTIST_KEY;
+                cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projectionSongs, selection, null, sortOrder);
+                songDetails = getSongFromCursor(cursor);
                 break;
             case Favorite:
                 break;
             case Gener:
+                Uri uri = MediaStore.Audio.Genres.Members.getContentUri("external",id);
+                cursor = context.getContentResolver().query(uri, projectionSongs, null, null, null);
+                songDetails = getSongFromCursor(cursor);
                 break;
             case MostPlay:
                 break;
@@ -95,7 +103,6 @@ public class PhoneMediaControl {
                 String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
                 songDetails.add(new SongDetail(id, albumID, artist, album, title, path, display_name, duration));
             }
-
         }
         return songDetails;
     }

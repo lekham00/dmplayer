@@ -90,12 +90,12 @@ public class ChildFragmentAlbum extends LKBaseChildFragment {
     }
 
     @Override
-    public void onMoveDetail(long id, int position) {
+    public void onMoveDetail(long id, String title) {
         Intent intent = new Intent(getContext(), AlbumAndArtisDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putLong(AlbumAndArtisDetailsActivity.ID, id);
-        bundle.putInt(AlbumAndArtisDetailsActivity.POSITION, position);
         bundle.putInt(AlbumAndArtisDetailsActivity.TAGFOR, PhoneMediaControl.SonLoadFor.Album.ordinal());
+        bundle.putString(AlbumAndArtisDetailsActivity.TITLE, title);
         intent.putExtras(bundle);
         startActivity(intent);
         getActivity().overridePendingTransition(0, 0);

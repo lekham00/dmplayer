@@ -30,7 +30,7 @@ public abstract class LKBaseChildFragment extends Fragment {
     private AsyncQueryHandler asyncQueryHandler;
      protected View view;
     public interface OnClickListener {
-        public void onClick(long id, int position);
+        public void onClick(long id, String title);
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public abstract class LKBaseChildFragment extends Fragment {
     public abstract int getIndexLine3(Cursor cursor);
     public abstract String getContentURI(Cursor cursor);
     public abstract Fragment getFragment();
-    public abstract void onMoveDetail(long id, int position);
+    public abstract void onMoveDetail(long id, String title);
     private void changeCursor(Cursor cursor) {
         if (getActivity() == null)
             return;
@@ -92,6 +92,7 @@ public abstract class LKBaseChildFragment extends Fragment {
         adapter.setContentURI(getContentURI(cursor));
         adapter.setIndexCursorLine1(getIndexLine1(cursor));
         adapter.setIndexCursorLine2(getIndexLine2(cursor));
+        adapter.setIndexCursorLine3(getIndexLine3(cursor));
         if (cursor != cursorChild) {
             cursorChild = cursor;
             adapter.changeCursor(cursor);
@@ -99,8 +100,8 @@ public abstract class LKBaseChildFragment extends Fragment {
     }
     OnClickListener onClickListener = new OnClickListener() {
         @Override
-        public void onClick(long id,int position) {
-            onMoveDetail(id, position);
+        public void onClick(long id, String title) {
+            onMoveDetail(id, title);
         }
 
     };

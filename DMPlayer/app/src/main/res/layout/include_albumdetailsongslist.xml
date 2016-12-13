@@ -25,6 +25,7 @@
         android:textSize="16sp" />
 
     <RelativeLayout
+        android:id="@+id/relati_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_albumname">
@@ -73,5 +74,11 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <com.lk.dmplayer.uicomponent.ExpandableHeightListView
+        android:id="@+id/recycler_allSongs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relati_item"
+        android:layout_marginBottom="?attr/actionBarSize"></com.lk.dmplayer.uicomponent.ExpandableHeightListView>
 
 </RelativeLayout>

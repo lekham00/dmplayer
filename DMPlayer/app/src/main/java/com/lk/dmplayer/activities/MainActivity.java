@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -56,12 +57,20 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private ImageView mBottomBarImgFavorite;
     private ImageView mBottomBarMoreIcon;
     protected SharedPreferences sharedPreferences;
+    protected Toolbar mToolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setThem();
         super.onCreate(savedInstanceState);
         setOnCreate();
+        toolBarStatusBar();
+    }
+    private void toolBarStatusBar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        mToolbar.setTitleTextColor(Color.WHITE);
+
     }
     protected void setOnCreate()
     {
