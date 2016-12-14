@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -16,14 +17,14 @@
             <ImageView
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
-                android:layout_height="360dp"
+                android:layout_height="@dimen/parallax_image_height_ancor"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/bg_default_album_art" />
             <View
                 android:id="@+id/anchor"
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
-                android:minHeight="360dp" />
+                android:layout_height="@dimen/parallax_image_height"
+                android:minHeight="@dimen/parallax_image_height_ancor" />
             <include
                 android:layout_below="@+id/anchor"
                 layout="@layout/include_albumdetailsongslist"

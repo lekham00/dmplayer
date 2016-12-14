@@ -1,16 +1,25 @@
 package com.lk.dmplayer.activities;
 
+import android.annotation.TargetApi;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.lk.dmplayer.R;
 import com.lk.dmplayer.adapter.SongsListAdapter;
 import com.lk.dmplayer.models.SongDetail;
+import com.lk.dmplayer.observablelib.ScrollUtils;
 import com.lk.dmplayer.phonemidea.PhoneMediaControl;
 import com.lk.dmplayer.uicomponent.ExpandableHeightListView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -23,6 +32,7 @@ import java.util.ArrayList;
  * Created by dlkham on 12/6/2016.
  */
 public class AlbumAndArtisDetailsActivity extends MainActivity {
+    public final String TAG = getClass().getSimpleName();
     public static final String ID = "ID";
     public static final String POSITION = "POSITION";
     public static final String TAGFOR = "TAG_FOR";
@@ -39,6 +49,9 @@ public class AlbumAndArtisDetailsActivity extends MainActivity {
     private ImageLoader imageLoader = ImageLoader.getInstance();
     private ExpandableHeightListView recycler_songslist;
     private SongsListAdapter songsListAdapter;
+    private ScrollView scrollView;
+    private int color = 0xFFFFFF;
+    private int mParallaxImageHeight;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_albumandartisdetails);
@@ -48,6 +61,7 @@ public class AlbumAndArtisDetailsActivity extends MainActivity {
         getInfoDetailFromBundle();
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     private void ini()
     {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -59,6 +73,22 @@ public class AlbumAndArtisDetailsActivity extends MainActivity {
         recycler_songslist = (ExpandableHeightListView) findViewById(R.id.recycler_allSongs);
         songsListAdapter = new SongsListAdapter(this);
         recycler_songslist.setAdapter(songsListAdapter);
+        scrollView = (ScrollView) findViewById(R.id.scroll);
+        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                Log.d(TAG, "scrollX : " + scrollX + " scrollY: " + scrollY + " oldScrollX : " + oldScrollX + " oldScrollY : " + oldScrollY);
+                int baseColor = color;
+                float alpha = Math.min(1, (float) scrollY / mParallaxImageHeight);
+                mToolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
+            }
+        });
+        // Setup RecyclerView inside drawer
+        mParallaxImageHeight = (int) getResources().getDimension(R.dimen.parallax_image_height);
+        final TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        color = typedValue.data;
+        mToolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(0,color));
     }
 
     @Override
