@@ -24,6 +24,10 @@
 
         </activity>
         <activity android:name=".activities.AlbumAndArtisDetailsActivity" android:screenOrientation="portrait"/>
+        <service
+            android:name=".manager.MusicPlayerService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

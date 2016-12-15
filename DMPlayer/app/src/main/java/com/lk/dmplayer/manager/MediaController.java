@@ -1,5 +1,6 @@
 package com.lk.dmplayer.manager;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -8,6 +9,7 @@ import android.media.MediaPlayer;
 
 import com.lk.dmplayer.models.SongDetail;
 import com.lk.dmplayer.phonemidea.DMPlayerUtility;
+import com.lk.dmplayer.untilily.ApplicationDMPlayer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,6 +87,13 @@ public class MediaController implements SensorEventListener {
         MusicPreferance.playingSongDetail = songDetail;
         currentIndexSong = MusicPreferance.arrayListSong.indexOf(songDetail);
         NotificationManager.getInstance().postNotificationName(NotificationManager.audioDidStarted, songDetail);
+        if (MusicPreferance.playingSongDetail != null) {
+            Intent intent = new Intent(ApplicationDMPlayer.applicationContext, MusicPlayerService.class);
+            ApplicationDMPlayer.applicationContext.startService(intent);
+        } else {
+            Intent intent = new Intent(ApplicationDMPlayer.applicationContext, MusicPlayerService.class);
+            ApplicationDMPlayer.applicationContext.stopService(intent);
+        }
         return true;
     }
 
@@ -125,6 +134,10 @@ public class MediaController implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    public SongDetail getPlayingSongDetail() {
+        return MusicPreferance.playingSongDetail;
     }
 
     private void clearUpPlayer() {

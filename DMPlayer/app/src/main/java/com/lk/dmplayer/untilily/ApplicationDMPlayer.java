@@ -1,6 +1,7 @@
 package com.lk.dmplayer.untilily;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.Handler;
 
 /**
@@ -8,10 +9,12 @@ import android.os.Handler;
  */
 public class ApplicationDMPlayer extends Application {
     public static Handler handler = null;
+    public static Context applicationContext = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        handler = new Handler(getMainLooper());
+        applicationContext = getApplicationContext();
+        handler = new Handler(applicationContext.getMainLooper());
     }
 }
