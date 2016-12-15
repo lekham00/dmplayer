@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -61,7 +62,6 @@ public class AlbumAndArtisDetailsActivity extends MainActivity {
         getInfoDetailFromBundle();
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     private void ini()
     {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,10 +74,12 @@ public class AlbumAndArtisDetailsActivity extends MainActivity {
         songsListAdapter = new SongsListAdapter(this);
         recycler_songslist.setAdapter(songsListAdapter);
         scrollView = (ScrollView) findViewById(R.id.scroll);
-        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                Log.d(TAG, "scrollX : " + scrollX + " scrollY: " + scrollY + " oldScrollX : " + oldScrollX + " oldScrollY : " + oldScrollY);
+            public void onScrollChanged() {
+                int scrollY = scrollView.getScrollY(); // For ScrollView
+                int scrollX = scrollView.getScrollX(); // For HorizontalScrollView
+                Log.d(TAG, "scrollX : " + scrollX + " scrollY: " + scrollY );
                 int baseColor = color;
                 float alpha = Math.min(1, (float) scrollY / mParallaxImageHeight);
                 mToolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));

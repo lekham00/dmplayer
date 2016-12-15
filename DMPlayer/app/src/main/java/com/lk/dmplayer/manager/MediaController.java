@@ -45,6 +45,7 @@ public class MediaController implements SensorEventListener {
             return playAudio(songDetail);
         }
         if (songDetails != null && songDetails.size() > 0) {
+            MusicPreferance.arrayListSong.clear();
             MusicPreferance.arrayListSong.addAll(songDetails);
         }
         currentIndexSong = MusicPreferance.arrayListSong.indexOf(songDetail);

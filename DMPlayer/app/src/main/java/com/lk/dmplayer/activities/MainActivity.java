@@ -188,6 +188,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         addObserver();
+        loadAlreadyPlaying();
     }
 
     @Override
@@ -355,4 +356,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+    private void loadAlreadyPlaying() {
+        if(MusicPreferance.playingSongDetail != null)
+        {
+            updateTitle(false);
+        }
+    }
 }
