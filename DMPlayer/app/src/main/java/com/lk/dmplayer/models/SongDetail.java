@@ -1,6 +1,14 @@
 package com.lk.dmplayer.models;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
+
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
 
 /**
  * Created by Le Kham on 10/24/2016.
@@ -107,5 +115,23 @@ public class SongDetail {
 
     public void setAlbum(String album) {
         this.album = album;
+    }
+
+    public Bitmap getSmallCover(Context context) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 1;
+        Bitmap bitmap = null;
+
+        try {
+            Uri uri = Uri.parse("content://media/external/audio/media/" + getId() + "/albumart");
+            ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(uri, "r");
+            if (parcelFileDescriptor != null) {
+                FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+                bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 }
