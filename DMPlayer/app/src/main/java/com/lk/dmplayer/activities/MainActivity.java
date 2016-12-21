@@ -143,11 +143,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (MediaController.getInstance().isPauseAudio()) {
             mPlayPauseView.Play();
             mBtnPlay.Play();
-            MediaController.getInstance().playAudio(MusicPreferance.playingSongDetail);
+            MediaController.getInstance().playAudio(MediaController.getInstance().getPlayingSongDetail());
         } else {
             mPlayPauseView.Pause();
             mBtnPlay.Pause();
-            MediaController.getInstance().pauseAudio();
+            MediaController.getInstance().pauseAudio(MediaController.getInstance().getPlayingSongDetail());
         }
     }
     protected void updateProgress(SongDetail songDetail) {

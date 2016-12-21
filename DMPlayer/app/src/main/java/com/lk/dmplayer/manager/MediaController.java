@@ -63,7 +63,7 @@ public class MediaController implements SensorEventListener {
             }
             return true;
         }
-        clearUpPlayer();
+        clearUpPlayer(false);
         try {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -76,7 +76,7 @@ public class MediaController implements SensorEventListener {
                     if (currentIndexSong < MusicPreferance.arrayListSong.size() - 1)
                         playNextSong(false);
                     else
-                        clearUpPlayer();
+                        clearUpPlayer(false);
                 }
             });
         } catch (IOException e) {
@@ -97,14 +97,18 @@ public class MediaController implements SensorEventListener {
         return true;
     }
 
-    public boolean pauseAudio() {
+    public boolean pauseAudio(SongDetail songDetail) {
+        if(songDetail == null)
+            return false;
         if (mediaPlayer != null) {
             try {
                 mediaPlayer.pause();
+                isPause = true;
+                NotificationManager.getInstance().postNotificationName(NotificationManager.audioPlayStateChanged, songDetail);
             } catch (Exception ex) {
             }
+
         }
-        isPause = true;
         return true;
     }
 
@@ -140,7 +144,7 @@ public class MediaController implements SensorEventListener {
         return MusicPreferance.playingSongDetail;
     }
 
-    private void clearUpPlayer() {
+    public void clearUpPlayer(boolean isStopSevices) {
         if (mediaPlayer != null) {
             try {
                 mediaPlayer.reset();
@@ -149,6 +153,11 @@ public class MediaController implements SensorEventListener {
                 mediaPlayer = null;
             } catch (Exception ex) {
             }
+        }
+        if(isStopSevices)
+        {
+            Intent intent = new Intent(ApplicationDMPlayer.applicationContext, MusicPlayerService.class);
+            ApplicationDMPlayer.applicationContext.stopService(intent);
         }
     }
 
@@ -200,7 +209,7 @@ public class MediaController implements SensorEventListener {
         MusicPreferance.playingSongDetail.setAudioProgress(0);
         if (!isNext) {
             if (repeatMode == ONE_REPEAT && mCountRepeat == 0 || repeatMode == ALWAYS_REPEAT) {
-                clearUpPlayer();
+                clearUpPlayer(false);
                 playAudio(MusicPreferance.arrayListSong.get(currentIndexSong));
                 if (repeatMode == ONE_REPEAT) {
                     mCountRepeat++;

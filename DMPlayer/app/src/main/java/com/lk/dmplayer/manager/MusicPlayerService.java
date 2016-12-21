@@ -32,7 +32,7 @@ import com.lk.dmplayer.untilily.ApplicationDMPlayer;
  * Created by Kham on 12/15/2016.
  */
 
-public class MusicPlayerService extends Service implements AudioManager.OnAudioFocusChangeListener{
+public class MusicPlayerService extends Service implements AudioManager.OnAudioFocusChangeListener, NotificationManager.NotificationCenterDelegate {
     private final String TAG = getClass().getSimpleName();
     public static final String NOTIFY_PREVIOUS = "musicplayer.previous";
     public static final String NOTIFY_CLOSE = "musicplayer.close";
@@ -46,6 +46,7 @@ public class MusicPlayerService extends Service implements AudioManager.OnAudioF
     private static boolean supportBigNotifications = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     private static boolean supportLockScreenControls = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
     private ComponentName remoteComponentName;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -56,6 +57,7 @@ public class MusicPlayerService extends Service implements AudioManager.OnAudioF
     public void onCreate() {
         super.onCreate();
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        NotificationManager.getInstance().addObserver(this, NotificationManager.audioPlayStateChanged);
     }
 
     @Override
@@ -105,13 +107,12 @@ public class MusicPlayerService extends Service implements AudioManager.OnAudioF
         if (supportBigNotifications)
             notification.bigContentView = expandedView;
         Bitmap bitmap = songDetail != null ? songDetail.getSmallCover(ApplicationDMPlayer.applicationContext) : null;
-        if(bitmap != null)
-        {
+        if (bitmap != null) {
             notification.contentView.setImageViewBitmap(R.id.player_album_art, bitmap);
             if (supportBigNotifications) {
                 notification.bigContentView.setImageViewBitmap(R.id.player_album_art, bitmap);
             }
-        }else {
+        } else {
             notification.contentView.setImageViewResource(R.id.player_album_art, R.mipmap.bg_default_album_art);
             if (supportBigNotifications) {
                 notification.bigContentView.setImageViewResource(R.id.player_album_art, R.mipmap.bg_default_album_art);
@@ -121,21 +122,21 @@ public class MusicPlayerService extends Service implements AudioManager.OnAudioF
         notification.contentView.setViewVisibility(R.id.player_next, View.VISIBLE);
         notification.contentView.setViewVisibility(R.id.player_previous, View.VISIBLE);
 
-//        if (MediaController.getInstance().isPauseAudio()) {
-//            notification.contentView.setViewVisibility(R.id.player_pause, View.VISIBLE);
-//            notification.contentView.setViewVisibility(R.id.player_play, View.GONE);
-//            if (supportBigNotifications) {
-//                notification.bigContentView.setViewVisibility(R.id.player_pause, View.VISIBLE);
-//                notification.bigContentView.setViewVisibility(R.id.player_play, View.GONE);
-//            }
-//        } else {
-//            notification.contentView.setViewVisibility(R.id.player_pause, View.GONE);
-//            notification.contentView.setViewVisibility(R.id.player_play, View.VISIBLE);
-//            if (supportBigNotifications) {
-//                notification.bigContentView.setViewVisibility(R.id.player_pause, View.GONE);
-//                notification.bigContentView.setViewVisibility(R.id.player_play, View.VISIBLE);
-//            }
-//        }
+        if (MediaController.getInstance().isPauseAudio()) {
+            notification.contentView.setViewVisibility(R.id.player_pause, View.GONE);
+            notification.contentView.setViewVisibility(R.id.player_play, View.VISIBLE);
+            if (supportBigNotifications) {
+                notification.bigContentView.setViewVisibility(R.id.player_pause, View.GONE);
+                notification.bigContentView.setViewVisibility(R.id.player_play, View.VISIBLE);
+            }
+        } else {
+            notification.contentView.setViewVisibility(R.id.player_pause, View.VISIBLE);
+            notification.contentView.setViewVisibility(R.id.player_play, View.GONE);
+            if (supportBigNotifications) {
+                notification.bigContentView.setViewVisibility(R.id.player_pause, View.VISIBLE);
+                notification.bigContentView.setViewVisibility(R.id.player_play, View.GONE);
+            }
+        }
 
         if (supportBigNotifications) {
             notification.bigContentView.setViewVisibility(R.id.player_next, View.VISIBLE);
@@ -170,10 +171,11 @@ public class MusicPlayerService extends Service implements AudioManager.OnAudioF
         }
 
     }
-    private void RegisterRemoteClient(){
+
+    private void RegisterRemoteClient() {
         remoteComponentName = new ComponentName(getApplicationContext(), MusicPlayerReceiver.class.getName());
         try {
-            if(remoteControlClient == null) {
+            if (remoteControlClient == null) {
                 audioManager.registerMediaButtonEventReceiver(remoteComponentName);
                 Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
                 mediaButtonIntent.setComponent(remoteComponentName);
@@ -188,15 +190,16 @@ public class MusicPlayerService extends Service implements AudioManager.OnAudioF
                             RemoteControlClient.FLAG_KEY_MEDIA_STOP |
                             RemoteControlClient.FLAG_KEY_MEDIA_PREVIOUS |
                             RemoteControlClient.FLAG_KEY_MEDIA_NEXT);
-        }catch(Exception ex) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
-    private void UpdateMetadata(SongDetail songDetail){
-        if(remoteControlClient != null)
-        {
+
+    private void UpdateMetadata(SongDetail songDetail) {
+        if (remoteControlClient != null) {
             RemoteControlClient.MetadataEditor metadataEditor = remoteControlClient.editMetadata(true);
-            metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_ARTIST,songDetail.getArtist());
-            metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_TITLE,songDetail.getTitle());
+            metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_ARTIST, songDetail.getArtist());
+            metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_TITLE, songDetail.getTitle());
             if (songDetail != null && songDetail.getSmallCover(getApplication()) != null) {
                 metadataEditor.putBitmap(RemoteControlClient.MetadataEditor.BITMAP_KEY_ARTWORK, songDetail.getSmallCover(getApplication()));
             }
@@ -209,5 +212,27 @@ public class MusicPlayerService extends Service implements AudioManager.OnAudioF
     @Override
     public void onAudioFocusChange(int focusChange) {
 
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args) {
+        if (id == NotificationManager.audioPlayStateChanged) {
+            SongDetail songDetail = (SongDetail) args[0];
+            if (songDetail != null)
+                createNotification((SongDetail) args[0]);
+            else
+                stopSelf();
+        }
+    }
+
+    @Override
+    public void newSongLoaded(Object... args) {
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        NotificationManager.getInstance().removeObserver(this, NotificationManager.audioPlayStateChanged);
     }
 }
