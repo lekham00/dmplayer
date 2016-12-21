@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.lk.dmplayer.R;
+import com.lk.dmplayer.activities.DMPlayerBaseActivity;
 import com.lk.dmplayer.models.SongDetail;
 import com.lk.dmplayer.phonemidea.DMPlayerUtility;
 import com.lk.dmplayer.untilily.ApplicationDMPlayer;
@@ -93,9 +94,9 @@ public class MusicPlayerService extends Service implements AudioManager.OnAudioF
         if (supportBigNotifications) {
             expandedView = new RemoteViews(getApplicationContext().getPackageName(), R.layout.player_big_notification);
         }
-        Intent intent = new Intent(ApplicationDMPlayer.applicationContext, ApplicationDMPlayer.class);
-        intent.setAction("openplayer");
-        intent.setFlags(32768);
+        Intent intent = new Intent(ApplicationDMPlayer.applicationContext, DMPlayerBaseActivity.class);
+//        intent.setAction("openplayer");
+//        intent.setFlags(32768);
         PendingIntent pendingIntent = PendingIntent.getActivity(ApplicationDMPlayer.applicationContext, 0, intent, 0);
         Notification notification = new NotificationCompat.Builder(getApplication()).setSmallIcon(R.mipmap.player).setContentIntent(pendingIntent).setContentTitle(songName).build();
         notification.contentView = simpleContentView;

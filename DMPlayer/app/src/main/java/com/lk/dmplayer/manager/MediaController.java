@@ -145,6 +145,8 @@ public class MediaController implements SensorEventListener {
     }
 
     public void clearUpPlayer(boolean isStopSevices) {
+        pauseAudio(getPlayingSongDetail());
+        stopProgressTime();
         if (mediaPlayer != null) {
             try {
                 mediaPlayer.reset();
@@ -191,7 +193,13 @@ public class MediaController implements SensorEventListener {
             }
         }, 0, 17);
     }
-
+    private void stopProgressTime()
+    {
+        if (progressTimer != null) {
+            progressTimer.cancel();
+            progressTimer = null;
+        }
+    }
     public boolean seekToProgress(int value) {
         try {
             if (mediaPlayer != null) {
