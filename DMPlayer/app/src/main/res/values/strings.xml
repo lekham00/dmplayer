@@ -3,7 +3,7 @@
 
     <!-- DataBase Name And Version -->
     <string name="DataBaseName_Version">1</string>
-    <string name="DataBaseName">DMPlayer</string>
+    <string name="DataBaseName">LKPlayer</string>
 
     <string name="drawer_open">open drawer</string>
     <string name="drawer_close">close drawer</string>

@@ -54,8 +54,8 @@ public class FragmentAllSongs extends Fragment {
     private ListView recycler_songslist;
     private SongsListAdapter allSongsListAdapter;
     public static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
-    private String alphabet = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private AlphabetIndexer mIndexer;
+//    private String alphabet = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+//    private AlphabetIndexer mIndexer;
     private LinearLayout mIndexerLayout;
     private int lastSelectedPosition = -1;
 
@@ -77,20 +77,21 @@ public class FragmentAllSongs extends Fragment {
     private void setupInitialViews(View v) {
         recycler_songslist = (ListView) v.findViewById(R.id.recycler_allSongs);
         allSongsListAdapter = new SongsListAdapter(getActivity());
+        allSongsListAdapter.setType(PhoneMediaControl.SonLoadFor.All.ordinal());
         recycler_songslist.setAdapter(allSongsListAdapter);
-        mIndexerLayout= (LinearLayout) v.findViewById(R.id.indexer_layout);
-        for(int i = 0; i < alphabet.length(); i++) {
-            TextView letterTextView = new TextView(getActivity());
-            letterTextView.setText(alphabet.charAt(i)+"");
-
-            letterTextView.setTextSize(14f);
-            letterTextView.setGravity(Gravity.CENTER);
-            letterTextView.setTextColor(Color.parseColor("#0075F8"));
-            LinearLayout.LayoutParams paramss = new LinearLayout.LayoutParams(35, 0, 1.0f);
-            letterTextView.setLayoutParams(paramss);
-            letterTextView.setPadding(4, 0, 4, 0);
-            mIndexerLayout.addView(letterTextView);
-        }
+//        mIndexerLayout= (LinearLayout) v.findViewById(R.id.indexer_layout);
+//        for(int i = 0; i < alphabet.length(); i++) {
+//            TextView letterTextView = new TextView(getActivity());
+//            letterTextView.setText(alphabet.charAt(i)+"");
+//
+//            letterTextView.setTextSize(14f);
+//            letterTextView.setGravity(Gravity.CENTER);
+//            letterTextView.setTextColor(Color.parseColor("#0075F8"));
+//            LinearLayout.LayoutParams paramss = new LinearLayout.LayoutParams(35, 0, 1.0f);
+//            letterTextView.setLayoutParams(paramss);
+//            letterTextView.setPadding(4, 0, 4, 0);
+//            mIndexerLayout.addView(letterTextView);
+//        }
     }
 
     private void loadAllSongs() {
@@ -99,60 +100,60 @@ public class FragmentAllSongs extends Fragment {
             @Override
             public void loadSongsComplete(ArrayList<SongDetail> songDetails, Cursor cursor) {
                 allSongsListAdapter.setSongDetail(songDetails);
-                mIndexer = new AlphabetIndexer(cursor, 2, alphabet);
+//                mIndexer = new AlphabetIndexer(cursor, 2, alphabet);
                 allSongsListAdapter.notifyDataSetChanged();
-                mIndexerLayout.setOnTouchListener(mOnTouchListener);
+//                mIndexerLayout.setOnTouchListener(mOnTouchListener);
             }
         });
         phoneMediaControl.loadMusicList(getActivity(), -1, PhoneMediaControl.SonLoadFor.All, "");
     }
 
 
-    private View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
-
-        @SuppressLint("NewApi")
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            float alphabetHeight = mIndexerLayout.getHeight();
-            float y = event.getY();
-            int sectionPosition = (int) ((y / alphabetHeight) / (1f / 27f));
-            if (sectionPosition < 0) {
-                sectionPosition = 0;
-            } else if (sectionPosition > 26) {
-                sectionPosition = 26;
-            }
-            if(lastSelectedPosition != sectionPosition) {
-                if(-1 != lastSelectedPosition){
-                    ((TextView) mIndexerLayout.getChildAt(lastSelectedPosition)).setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                }
-                lastSelectedPosition = sectionPosition;
-            }
-            String sectionLetter = String.valueOf(alphabet.charAt(sectionPosition));
-            int position = mIndexer.getPositionForSection(sectionPosition);
-            TextView textView = (TextView) mIndexerLayout.getChildAt(sectionPosition);
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-//                    mIndexerLayout.setBackgroundResource(R.drawable.letterslist_bg);
-//                    textView.setBackgroundColor(getResources().getColor(R.color.letter_bg_color));
-//                    mSectionToastLayout.setVisibility(View.VISIBLE);
-//                    mSectionToastText.setText(sectionLetter);
-                    recycler_songslist.smoothScrollToPositionFromTop(position,0,1);
-                    break;
-                case MotionEvent.ACTION_MOVE:
-//                    mIndexerLayout.setBackgroundResource(R.drawable.letterslist_bg);
-//                    textView.setBackgroundColor(getResources().getColor(R.color.letter_bg_color));
-//                    mSectionToastLayout.setVisibility(View.VISIBLE);
-//                    mSectionToastText.setText(sectionLetter);
-                    recycler_songslist.smoothScrollToPositionFromTop(position,0,1);
-                    break;
-                case MotionEvent.ACTION_UP:
-//                    mSectionToastLayout.setVisibility(View.GONE);
-                default:
-//                    mSectionToastLayout.setVisibility(View.GONE);
-                    break;
-            }
-            return true;
-        }
-
-    };
+//    private View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
+//
+//        @SuppressLint("NewApi")
+//        @Override
+//        public boolean onTouch(View v, MotionEvent event) {
+//            float alphabetHeight = mIndexerLayout.getHeight();
+//            float y = event.getY();
+//            int sectionPosition = (int) ((y / alphabetHeight) / (1f / 27f));
+//            if (sectionPosition < 0) {
+//                sectionPosition = 0;
+//            } else if (sectionPosition > 26) {
+//                sectionPosition = 26;
+//            }
+//            if(lastSelectedPosition != sectionPosition) {
+//                if(-1 != lastSelectedPosition){
+//                    ((TextView) mIndexerLayout.getChildAt(lastSelectedPosition)).setBackgroundColor(getResources().getColor(android.R.color.transparent));
+//                }
+//                lastSelectedPosition = sectionPosition;
+//            }
+////            String sectionLetter = String.valueOf(alphabet.charAt(sectionPosition));
+////            int position = mIndexer.getPositionForSection(sectionPosition);
+////            TextView textView = (TextView) mIndexerLayout.getChildAt(sectionPosition);
+//            switch (event.getAction()) {
+//                case MotionEvent.ACTION_DOWN:
+////                    mIndexerLayout.setBackgroundResource(R.drawable.letterslist_bg);
+////                    textView.setBackgroundColor(getResources().getColor(R.color.letter_bg_color));
+////                    mSectionToastLayout.setVisibility(View.VISIBLE);
+////                    mSectionToastText.setText(sectionLetter);
+//                    recycler_songslist.smoothScrollToPositionFromTop(position,0,1);
+//                    break;
+//                case MotionEvent.ACTION_MOVE:
+////                    mIndexerLayout.setBackgroundResource(R.drawable.letterslist_bg);
+////                    textView.setBackgroundColor(getResources().getColor(R.color.letter_bg_color));
+////                    mSectionToastLayout.setVisibility(View.VISIBLE);
+////                    mSectionToastText.setText(sectionLetter);
+//                    recycler_songslist.smoothScrollToPositionFromTop(position,0,1);
+//                    break;
+//                case MotionEvent.ACTION_UP:
+////                    mSectionToastLayout.setVisibility(View.GONE);
+//                default:
+////                    mSectionToastLayout.setVisibility(View.GONE);
+//                    break;
+//            }
+//            return true;
+//        }
+//
+//    };
 }

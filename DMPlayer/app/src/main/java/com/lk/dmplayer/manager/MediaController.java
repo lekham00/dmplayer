@@ -1,5 +1,6 @@
 package com.lk.dmplayer.manager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -27,13 +28,16 @@ public class MediaController implements SensorEventListener {
     private MediaPlayer mediaPlayer = null;
     private boolean isPause = true;
     private Timer progressTimer = null;
-    private int currentIndexSong;
+    public int currentIndexSong;
     private boolean shuffleMusic = false;
     private int repeatMode = 0;
     public static final int NON_REPEAT = 0;
     public static final int ALWAYS_REPEAT = 1;
     public static final int ONE_REPEAT = 2;
     private int mCountRepeat = 0;
+    public int mType = 0;
+    public long mId = -1;
+    public String mPath = "";
 
     public static MediaController getInstance() {
         if (Instance == null) {
@@ -42,7 +46,9 @@ public class MediaController implements SensorEventListener {
         return Instance;
     }
 
-    public boolean setPlayerList(ArrayList<SongDetail> songDetails, SongDetail songDetail) {
+    public boolean setPlayerList(ArrayList<SongDetail> songDetails, SongDetail songDetail, int type, long id) {
+        mType = type;
+        mId = id;
         if (MusicPreferance.playingSongDetail == songDetail) {
             return playAudio(songDetail);
         }
@@ -161,6 +167,14 @@ public class MediaController implements SensorEventListener {
             Intent intent = new Intent(ApplicationDMPlayer.applicationContext, MusicPlayerService.class);
             ApplicationDMPlayer.applicationContext.stopService(intent);
         }
+    }
+
+    public void clearUpPlayer(Context context, boolean isStopSevices) {
+        MusicPreferance.saveLastSong(context, getPlayingSongDetail());
+        MusicPreferance.saveLastSongListId(context, mId);
+        MusicPreferance.saveLastSongListType(context , mType);
+        MusicPreferance.saveLastSongPath(context, mPath);
+        clearUpPlayer(isStopSevices);
     }
 
     private void startProgressTime() {

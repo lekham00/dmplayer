@@ -126,6 +126,8 @@ public class AlbumAndArtisDetailsActivity extends MainActivity {
         } else if (tagFor == PhoneMediaControl.SonLoadFor.Gener.ordinal()) {
             loadData(id, PhoneMediaControl.SonLoadFor.Gener);
         }
+        songsListAdapter.setId(id);
+        songsListAdapter.setType(tagFor);
     }
 
     private void loadData(final long id, PhoneMediaControl.SonLoadFor typeData) {

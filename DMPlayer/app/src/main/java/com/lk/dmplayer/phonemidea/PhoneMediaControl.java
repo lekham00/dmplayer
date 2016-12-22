@@ -51,7 +51,7 @@ public class PhoneMediaControl {
 
     private final String[] projectionSongs = {MediaStore.Audio.Media._ID, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DURATION};
 
-    private ArrayList<SongDetail> getList(Context context, long id, SonLoadFor sonLoadFor, String path) {
+    public ArrayList<SongDetail> getList(Context context, long id, SonLoadFor sonLoadFor, String path) {
         ArrayList<SongDetail> songDetails = new ArrayList<>();
         switch (sonLoadFor) {
             case All:

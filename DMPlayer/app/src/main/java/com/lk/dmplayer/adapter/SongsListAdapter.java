@@ -32,6 +32,8 @@ public class SongsListAdapter extends BaseAdapter {
     private LayoutInflater mLayoutInflater;
     private DisplayImageOptions options;
     private ArrayList<SongDetail> detailArrayList = new ArrayList<>();
+    private long mId = -1;
+    private int mType = 0;
     public SongsListAdapter(Context context) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
@@ -96,11 +98,20 @@ public class SongsListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 ((MainActivity) mContext).loadSongDetails(songDetail);
-                MediaController.getInstance().setPlayerList(detailArrayList, songDetail);
+                MediaController.getInstance().setPlayerList(detailArrayList, songDetail, mType, mId);
             }
         });
         return view;
     }
+
+    public void setId(long id) {
+        this.mId = id;
+    }
+
+    public void setType(int type) {
+        this.mType = type;
+    }
+
     class ViewHolder {
         TextView textViewSongName;
         ImageView imageSongThm, imageMoreIcon;

@@ -43,7 +43,7 @@ public class MusicPlayerReceiver extends BroadcastReceiver {
             }
         } else {
             if (intent.getAction().equals(MusicPlayerService.NOTIFY_CLOSE)) {
-                MediaController.getInstance().clearUpPlayer(true);
+                MediaController.getInstance().clearUpPlayer(context, true);
             } else if (intent.getAction().equals(MusicPlayerService.NOTIFY_NEXT)) {
                 MediaController.getInstance().playNextSong(true);
             } else if (intent.getAction().equals(MusicPlayerService.NOTIFY_PAUSE)) {

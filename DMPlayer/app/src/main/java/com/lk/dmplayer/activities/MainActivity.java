@@ -30,6 +30,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import java.util.ArrayList;
+
 /**
  * Created by dlkham on 12/6/2016.
  */
@@ -116,8 +118,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         mBottomBarImgFavorite.setOnClickListener(this);
         mBottomBarMoreIcon.setOnClickListener(this);
         setColorTextView();
-        MediaController.getInstance().setShuffleMusic(MusicPreferance.getShuffleFlagSong(this));
-        MediaController.getInstance().setRepeatMode(MusicPreferance.getRepeatModeSong(this));
 
     }
     @Override
@@ -189,6 +189,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onResume();
         addObserver();
         loadAlreadyPlaying();
+        setColorForShuffleAndRepeat();
+
     }
 
     @Override
@@ -318,6 +320,29 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+    private void setColorForShuffleAndRepeat() {
+        MediaController.getInstance().setShuffleMusic(MusicPreferance.getShuffleFlagSong(this));
+        MediaController.getInstance().setRepeatMode(MusicPreferance.getRepeatModeSong(this));
+        if (MediaController.getInstance().isShuffleMusic()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                mBtnSuffel.setColorFilter(getResources().getColor(R.color.colorAccent, null));
+            else
+                mBtnSuffel.setColorFilter(getResources().getColor(R.color.colorAccent));
+        }
+        if (MediaController.getInstance().getRepeatMode() == MediaController.ALWAYS_REPEAT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                mBtnToggle.setColorFilter(getResources().getColor(R.color.colorAccent, null));
+            else
+                mBtnToggle.setColorFilter(getResources().getColor(R.color.colorAccent));
+        } else if (MediaController.getInstance().getRepeatMode() == MediaController.ONE_REPEAT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                mBtnToggle.setColorFilter(getResources().getColor(R.color.colorAccent, null));
+            else
+                mBtnToggle.setColorFilter(getResources().getColor(R.color.colorAccent));
+            mBtnToggle.setImageResource(R.mipmap.ic_repeat_dark_select);
+        }
+    }
+
     private void playSongRepeat() {
         if (MusicPreferance.playingSongDetail != null) {
             if (MediaController.getInstance().getRepeatMode() == MediaController.NON_REPEAT) {
@@ -357,7 +382,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void loadAlreadyPlaying() {
-        if(MusicPreferance.playingSongDetail != null)
+        SongDetail songDetail = MusicPreferance.getLastSong(this);
+        ArrayList<SongDetail> songDetails = MusicPreferance.getListSongDetail(this);
+        if(songDetail != null)
         {
             updateTitle(false);
         }
