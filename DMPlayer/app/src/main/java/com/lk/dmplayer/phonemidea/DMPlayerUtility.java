@@ -19,7 +19,7 @@ import com.lk.dmplayer.untilily.ApplicationDMPlayer;
  */
 public class DMPlayerUtility {
     public static String getAudioDuration(long durationLong) {
-        long totalSecs = durationLong;
+        long totalSecs = durationLong / 1000;
         long hours = totalSecs / 3600;
         long minutes = (totalSecs % 3600) / 60;
         long seconds = totalSecs % 60;

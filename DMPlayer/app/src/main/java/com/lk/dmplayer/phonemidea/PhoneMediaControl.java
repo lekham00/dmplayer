@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 
+import com.lk.dmplayer.db.FavoritePlayTableHelper;
 import com.lk.dmplayer.models.SongDetail;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class PhoneMediaControl {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 if (phoneMediaControlINterface != null)
-                    phoneMediaControlINterface.loadSongsComplete(songDetails,cursor);
+                    phoneMediaControlINterface.loadSongsComplete(songDetails, cursor);
             }
         };
         task.execute();
@@ -73,9 +74,11 @@ public class PhoneMediaControl {
                 songDetails = getSongFromCursor(cursor);
                 break;
             case Favorite:
+                cursor = FavoritePlayTableHelper.getInstance(context).getCursorListSongFavorite();
+                songDetails = getSongFromCursorDB(cursor);
                 break;
             case Gener:
-                Uri uri = MediaStore.Audio.Genres.Members.getContentUri("external",id);
+                Uri uri = MediaStore.Audio.Genres.Members.getContentUri("external", id);
                 cursor = context.getContentResolver().query(uri, projectionSongs, null, null, null);
                 songDetails = getSongFromCursor(cursor);
                 break;
@@ -97,11 +100,27 @@ public class PhoneMediaControl {
                 int albumID = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
                 String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                 String display_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
                 String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                 String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
-                songDetails.add(new SongDetail(id, albumID, artist, album, title, path, display_name, duration));
+                songDetails.add(new SongDetail(id, albumID, artist, title, path, display_name, duration));
+            }
+        }
+        return songDetails;
+    }
+
+    private ArrayList<SongDetail> getSongFromCursorDB(Cursor cursor) {
+        ArrayList<SongDetail> songDetails = new ArrayList<>();
+        if (cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndex(FavoritePlayTableHelper.ID));
+                int albumID = cursor.getInt(cursor.getColumnIndex(FavoritePlayTableHelper.ALBUM_ID));
+                String title = cursor.getString(cursor.getColumnIndex(FavoritePlayTableHelper.TITLE));
+                String artist = cursor.getString(cursor.getColumnIndex(FavoritePlayTableHelper.ARTIST));
+                String display_name = cursor.getString(cursor.getColumnIndex(FavoritePlayTableHelper.DISPLAY_NAME));
+                String path = cursor.getString(cursor.getColumnIndex(FavoritePlayTableHelper.PATH));
+                String duration = cursor.getString(cursor.getColumnIndex(FavoritePlayTableHelper.DURATION));
+                songDetails.add(new SongDetail(id, albumID, artist, title, path, display_name, duration));
             }
         }
         return songDetails;

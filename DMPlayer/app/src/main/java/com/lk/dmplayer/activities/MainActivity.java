@@ -19,6 +19,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.lk.dmplayer.R;
+import com.lk.dmplayer.db.FavoritePlayTableHelper;
 import com.lk.dmplayer.manager.MediaController;
 import com.lk.dmplayer.manager.MusicPreferance;
 import com.lk.dmplayer.manager.NotificationManager;
@@ -68,23 +69,26 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setOnCreate();
         toolBarStatusBar();
     }
+
     private void toolBarStatusBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         mToolbar.setTitleTextColor(Color.WHITE);
 
     }
-    protected void setOnCreate()
-    {
+
+    protected void setOnCreate() {
         optionsBottomSlideOne = new DisplayImageOptions.Builder().showImageOnLoading(R.mipmap.bg_default_album_art).showImageForEmptyUri(R.mipmap.bg_default_album_art).showImageOnFail(R.mipmap.bg_default_album_art).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).bitmapConfig(Bitmap.Config.RGB_565).build();
         optionsImageSongAlbumBgMid = new DisplayImageOptions.Builder().showImageOnLoading(R.mipmap.drawer_header).showImageForEmptyUri(R.mipmap.drawer_header).showImageOnFail(R.mipmap.drawer_header).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).bitmapConfig(Bitmap.Config.RGB_565).build();
         imageLoader.init(ImageLoaderConfiguration.createDefault(this));
         initiSlidingUpPanel();
     }
+
     private void setThem() {
         sharedPreferences = getSharedPreferences("VALUES", Context.MODE_PRIVATE);
 
     }
+
     private void initiSlidingUpPanel() {
         mTimeProgress = (TextView) findViewById(R.id.slidepanel_time_progress);
         mTimeTotal = (TextView) findViewById(R.id.slidepanel_time_total);
@@ -120,6 +124,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setColorTextView();
 
     }
+
     @Override
     public void didReceivedNotification(int id, Object... args) {
         if (id == NotificationManager.audioDidStarted || id == NotificationManager.audioPlayStateChanged) {
@@ -137,6 +142,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         mTimeProgress.setTextColor(Color.WHITE);
         mTimeTotal.setTextColor(Color.WHITE);
     }
+
     private void playPauseView() {
         if (MusicPreferance.playingSongDetail == null)
             return;
@@ -150,12 +156,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             MediaController.getInstance().pauseAudio(MediaController.getInstance().getPlayingSongDetail());
         }
     }
+
     protected void updateProgress(SongDetail songDetail) {
         if (mAudioProgressControl != null) {
             mAudioProgressControl.setProgress((int) (songDetail.getAudioProgress() * 100));
             mTimeProgress.setText(DMPlayerUtility.getAudioDuration(songDetail.getAudioProgressSec()));
         }
     }
+
     protected void updateTitle(Boolean shutdown) {
         if (MediaController.getInstance().isPauseAudio()) {
             mPlayPauseView.Pause();
@@ -166,6 +174,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
         loadSongDetails(MusicPreferance.playingSongDetail);
     }
+
     @Override
     public void newSongLoaded(Object... args) {
 
@@ -184,6 +193,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         NotificationManager.getInstance().removeObserver(this, NotificationManager.audioProgressDidChanged);
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -293,16 +303,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 break;
         }
     }
-    private void onLayoutFavorite(View view)
-    {
-        view.setSelected(view.isSelected()?false:true);
+
+    private void onLayoutFavorite(View view) {
+        view.setSelected(view.isSelected() ? false : true);
         DMPlayerUtility.animateHeartButton(view);
+        FavoritePlayTableHelper.getInstance(this).insertSong(MediaController.getInstance().getPlayingSongDetail(), view.isSelected() ? 1 : 0);
     }
 
-    private void onBarMoreICon()
-    {
+    private void onBarMoreICon() {
 
     }
+
     private void playSongShuffle() {
         if (MusicPreferance.playingSongDetail != null) {
             if (MediaController.getInstance().isShuffleMusic()) {
@@ -384,8 +395,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private void loadAlreadyPlaying() {
         SongDetail songDetail = MusicPreferance.getLastSong(this);
         ArrayList<SongDetail> songDetails = MusicPreferance.getListSongDetail(this);
-        if(songDetail != null)
-        {
+        if (songDetail != null) {
             updateTitle(false);
         }
     }

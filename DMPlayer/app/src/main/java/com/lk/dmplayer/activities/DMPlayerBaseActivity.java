@@ -31,6 +31,7 @@ import android.widget.TextView;
 import com.lk.dmplayer.R;
 import com.lk.dmplayer.adapter.DrawerAdapter;
 import com.lk.dmplayer.fragments.FragmentAllSongs;
+import com.lk.dmplayer.fragments.FragmentFavorite;
 import com.lk.dmplayer.fragments.FragmentLibrary;
 import com.lk.dmplayer.manager.MediaController;
 import com.lk.dmplayer.manager.MusicPreferance;
@@ -179,7 +180,7 @@ public class DMPlayerBaseActivity extends MainActivity  {
                 addFragment(position, new FragmentLibrary(), arrayTitle[position].toString());
                 break;
             case 2:
-                addFragment(position, new FragmentAllSongs(), arrayTitle[position].toString());
+                addFragment(position, new FragmentFavorite(), arrayTitle[position].toString());
                 break;
             case 3:
                 addFragment(position, new FragmentAllSongs(), arrayTitle[position].toString());

@@ -17,7 +17,6 @@ public class SongDetail {
     private int id;
     private int album_id;
     private String artist;
-    private String album;
     private String title;
     private String display_name;
     private String duration;
@@ -25,15 +24,14 @@ public class SongDetail {
     private float audioProgress = 0.0f;
     private int audioProgressSec = 0;
 
-    public SongDetail(int _id, int album_id, String _artist, String _album, String _title, String _path, String _display_name, String _duration) {
+    public SongDetail(int _id, int album_id, String _artist, String _title, String _path, String _display_name, String _duration) {
         this.id = _id;
         this.album_id = album_id;
         this.artist = _artist;
-        this.album = _album;
         this.title = _title;
         this.path = _path;
         this.display_name = _display_name;
-        this.duration = TextUtils.isEmpty(_duration) ? "0" : String.valueOf(Long.valueOf(_duration) / 1000);
+        this.duration = TextUtils.isEmpty(_duration) ? "0" : _duration;
     }
 
 
@@ -109,13 +107,6 @@ public class SongDetail {
         this.audioProgressSec = audioProgressSec;
     }
 
-    public String getAlbum() {
-        return album;
-    }
-
-    public void setAlbum(String album) {
-        this.album = album;
-    }
 
     public Bitmap getSmallCover(Context context) {
         BitmapFactory.Options options = new BitmapFactory.Options();
