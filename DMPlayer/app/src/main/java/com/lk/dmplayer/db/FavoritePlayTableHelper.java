@@ -95,4 +95,18 @@ public class FavoritePlayTableHelper {
         }
         return cursor;
     }
+
+    public boolean isCheckSongFav(long id) {
+        Cursor cursor = null;
+        try {
+            String sql = "Select * from " + TABLENAME + " where " + ID + "=" + id + " And " + ISFAVORITE + "=1";
+            cursor = sqLiteDatabase.rawQuery(sql, null);
+            if (cursor.getCount() >= 0)
+                return true;
+        } catch (Exception ex) {
+            closeCursor(cursor);
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

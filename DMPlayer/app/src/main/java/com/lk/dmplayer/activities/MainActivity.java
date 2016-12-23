@@ -199,7 +199,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onResume();
         addObserver();
         loadAlreadyPlaying();
-        setColorForShuffleAndRepeat();
+        setColorForShuffleAndRepeatAndFav();
 
     }
 
@@ -307,7 +307,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private void onLayoutFavorite(View view) {
         view.setSelected(view.isSelected() ? false : true);
         DMPlayerUtility.animateHeartButton(view);
-        FavoritePlayTableHelper.getInstance(this).insertSong(MediaController.getInstance().getPlayingSongDetail(), view.isSelected() ? 1 : 0);
+        MediaController.getInstance().storeFavoritePlay(this, MediaController.getInstance().getPlayingSongDetail(), view.isSelected() ? 1 : 0);
     }
 
     private void onBarMoreICon() {
@@ -331,7 +331,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
-    private void setColorForShuffleAndRepeat() {
+    private void setColorForShuffleAndRepeatAndFav() {
         MediaController.getInstance().setShuffleMusic(MusicPreferance.getShuffleFlagSong(this));
         MediaController.getInstance().setRepeatMode(MusicPreferance.getRepeatModeSong(this));
         if (MediaController.getInstance().isShuffleMusic()) {
@@ -352,6 +352,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 mBtnToggle.setColorFilter(getResources().getColor(R.color.colorAccent));
             mBtnToggle.setImageResource(R.mipmap.ic_repeat_dark_select);
         }
+        if (MusicPreferance.playingSongDetail != null)
+            mBottomBarImgFavorite.setSelected(FavoritePlayTableHelper.getInstance(this).isCheckSongFav(MusicPreferance.playingSongDetail.getId()));
     }
 
     private void playSongRepeat() {

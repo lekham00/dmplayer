@@ -7,7 +7,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 
+import com.lk.dmplayer.db.FavoritePlayTableHelper;
+import com.lk.dmplayer.db.MostAndRecentPlayTableHelper;
 import com.lk.dmplayer.models.SongDetail;
 import com.lk.dmplayer.phonemidea.DMPlayerUtility;
 import com.lk.dmplayer.untilily.ApplicationDMPlayer;
@@ -100,11 +103,12 @@ public class MediaController implements SensorEventListener {
             Intent intent = new Intent(ApplicationDMPlayer.applicationContext, MusicPlayerService.class);
             ApplicationDMPlayer.applicationContext.stopService(intent);
         }
+        storeResendPlay(ApplicationDMPlayer.applicationContext, songDetail);
         return true;
     }
 
     public boolean pauseAudio(SongDetail songDetail) {
-        if(songDetail == null)
+        if (songDetail == null)
             return false;
         if (mediaPlayer != null) {
             try {
@@ -162,8 +166,7 @@ public class MediaController implements SensorEventListener {
             } catch (Exception ex) {
             }
         }
-        if(isStopSevices)
-        {
+        if (isStopSevices) {
             Intent intent = new Intent(ApplicationDMPlayer.applicationContext, MusicPlayerService.class);
             ApplicationDMPlayer.applicationContext.stopService(intent);
         }
@@ -172,7 +175,7 @@ public class MediaController implements SensorEventListener {
     public void clearUpPlayer(Context context, boolean isStopSevices) {
         MusicPreferance.saveLastSong(context, getPlayingSongDetail());
         MusicPreferance.saveLastSongListId(context, mId);
-        MusicPreferance.saveLastSongListType(context , mType);
+        MusicPreferance.saveLastSongListType(context, mType);
         MusicPreferance.saveLastSongPath(context, mPath);
         clearUpPlayer(isStopSevices);
     }
@@ -207,13 +210,14 @@ public class MediaController implements SensorEventListener {
             }
         }, 0, 17);
     }
-    private void stopProgressTime()
-    {
+
+    private void stopProgressTime() {
         if (progressTimer != null) {
             progressTimer.cancel();
             progressTimer = null;
         }
     }
+
     public boolean seekToProgress(int value) {
         try {
             if (mediaPlayer != null) {
@@ -282,5 +286,31 @@ public class MediaController implements SensorEventListener {
     private int getIndexSongShuffle() {
         Random random = new Random();
         return random.nextInt((MusicPreferance.arrayListSong.size() - 1) - 0 + 1) + 0;
+    }
+
+    public void storeResendPlay(final Context context, final SongDetail songDetail) {
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                if (MostAndRecentPlayTableHelper.getInstance(context).isSongExist(songDetail.getId())) {
+                    MostAndRecentPlayTableHelper.getInstance(context).upDateCount(songDetail.getId());
+                } else {
+                    MostAndRecentPlayTableHelper.getInstance(context).insertSong(songDetail);
+                }
+                return null;
+            }
+        };
+        task.execute();
+    }
+
+    public void storeFavoritePlay(final Context context, final SongDetail songDetail, final int isFav) {
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                FavoritePlayTableHelper.getInstance(context).insertSong(songDetail, isFav);
+                return null;
+            }
+        };
+        task.execute();
     }
 }
