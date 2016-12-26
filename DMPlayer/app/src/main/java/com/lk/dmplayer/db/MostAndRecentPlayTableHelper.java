@@ -98,7 +98,8 @@ public class MostAndRecentPlayTableHelper {
         try {
             cursor = sqLiteDatabase.rawQuery(sql, null);
             if (cursor != null && cursor.getCount() > 0) {
-                int count = cursor.getInt(cursor.getColumnIndex(PLAYCOUNT));
+                cursor.moveToFirst();
+                long count = cursor.getLong(cursor.getColumnIndex(PLAYCOUNT));
                 count++;
                 upDateCount(id, count);
             }
@@ -108,7 +109,7 @@ public class MostAndRecentPlayTableHelper {
         }
     }
 
-    public void upDateCount(long id, int count) {
+    public void upDateCount(long id, long count) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PLAYCOUNT, count);
         sqLiteDatabase.update(TABLENAME, contentValues, ID + "=?", new String[]{String.valueOf(id)});

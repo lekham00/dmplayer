@@ -53,7 +53,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private ImageView mBtnForward;
     private ImageView mBtnToggle;
     private RelativeLayout mSlidePanelChildTwoTopViewOne, mSlidePanelChildTwoTopViewTwo;
-    private SlidingUpPanelLayout mPanelLayout;
+    protected SlidingUpPanelLayout mPanelLayout;
     private ImageView mImgBottomSlideTwo;
     private TextView mTxtPlayeSongNameTwo;
     private TextView mTxtSongArtistNameTwo;
@@ -61,6 +61,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private ImageView mBottomBarMoreIcon;
     protected SharedPreferences sharedPreferences;
     protected Toolbar mToolbar;
+    protected boolean isPanelExpanded;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -244,11 +245,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onPanelCollapsed(View panel) {
         Log.d(TAG, "onPanelCollapsed");
+        isPanelExpanded = false;
     }
 
     @Override
     public void onPanelExpanded(View panel) {
         Log.d(TAG, "onPanelExpanded");
+        isPanelExpanded = true;
     }
 
     @Override
@@ -273,6 +276,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         imageLoader.displayImage(contentURI, mImageSongAlbumBgMid, optionsImageSongAlbumBgMid);
         long duration = Long.valueOf(songDetail.getDuration());
         mTimeTotal.setText(duration != 0 ? DMPlayerUtility.getAudioDuration(Long.valueOf(songDetail.getDuration())) : "-:--");
+        MediaController.getInstance().checkFavoritePlay(this, songDetail, mBottomBarImgFavorite);
     }
 
     @Override
@@ -399,6 +403,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         ArrayList<SongDetail> songDetails = MusicPreferance.getListSongDetail(this);
         if (songDetail != null) {
             updateTitle(false);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isPanelExpanded) {
+            mPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        } else {
+            super.onBackPressed();
+            overridePendingTransition(0, 0);
+            finish();
         }
     }
 }

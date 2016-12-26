@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -134,12 +135,21 @@ public class DMPlayerBaseActivity extends MainActivity  {
         ItemClickSupport itemClickSupport = ItemClickSupport.addTo(recyclerViewDrawer);
         itemClickSupport.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
-            public void onItemClick(RecyclerView parent, View view, int position, long id) {
+            public void onItemClick(RecyclerView parent, View view, final int position, long id) {
                 for (int i = 0; i < arrayTitle.length; i++) {
                     setColorDrawerSelect(i, position, color);
 
                 }
-                setFragment(position);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setFragment(position);
+                        if (isPanelExpanded) {
+                            mPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                        }
+                    }
+                }, 100);
                 mDrawerLayout.closeDrawers();
             }
         });
@@ -197,6 +207,7 @@ public class DMPlayerBaseActivity extends MainActivity  {
     }
 
     private void addFragment(int position, Fragment fragment, String title) {
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         sharedPreferences.edit().putInt("FRAGMENT", position).apply();

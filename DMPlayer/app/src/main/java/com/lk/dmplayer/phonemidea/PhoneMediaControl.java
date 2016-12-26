@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.provider.MediaStore;
 
 import com.lk.dmplayer.db.FavoritePlayTableHelper;
+import com.lk.dmplayer.db.MostAndRecentPlayTableHelper;
 import com.lk.dmplayer.models.SongDetail;
 
 import java.util.ArrayList;
@@ -83,6 +84,8 @@ public class PhoneMediaControl {
                 songDetails = getSongFromCursor(cursor);
                 break;
             case MostPlay:
+                cursor = MostAndRecentPlayTableHelper.getInstance(context).getCursorListSong();
+                songDetails = getSongFromCursorDB(cursor);
                 break;
             case Musicintent:
                 break;

@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.view.View;
 
 import com.lk.dmplayer.db.FavoritePlayTableHelper;
 import com.lk.dmplayer.db.MostAndRecentPlayTableHelper;
@@ -201,7 +202,7 @@ public class MediaController implements SensorEventListener {
                                 if (progress >= mediaPlayer.getDuration())
                                     return;
                                 MusicPreferance.playingSongDetail.setAudioProgress(value);
-                                MusicPreferance.playingSongDetail.setAudioProgressSec(progress / 1000);
+                                MusicPreferance.playingSongDetail.setAudioProgressSec(progress);
                                 NotificationManager.getInstance().postNotificationName(NotificationManager.audioProgressDidChanged, MusicPreferance.playingSongDetail);
                             }
                         }
@@ -309,6 +310,23 @@ public class MediaController implements SensorEventListener {
             protected Void doInBackground(Void... params) {
                 FavoritePlayTableHelper.getInstance(context).insertSong(songDetail, isFav);
                 return null;
+            }
+        };
+        task.execute();
+    }
+
+    public void checkFavoritePlay(final Context context, final SongDetail songDetail, final View view) {
+        AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... params) {
+
+                return FavoritePlayTableHelper.getInstance(context).isCheckSongFav(songDetail.getId());
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                view.setSelected(aBoolean);
             }
         };
         task.execute();
