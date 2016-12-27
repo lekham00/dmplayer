@@ -123,6 +123,9 @@ public class MediaController implements SensorEventListener {
         return true;
     }
 
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
     public boolean resumeAudio() {
         if (mediaPlayer != null) {
             startProgressTime();
