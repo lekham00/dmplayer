@@ -1,20 +1,10 @@
 package com.lk.dmplayer.fragments;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
-import android.media.audiofx.Visualizer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +17,6 @@ import android.widget.TextView;
 
 import com.lk.dmplayer.R;
 import com.lk.dmplayer.manager.MediaController;
-import com.lk.dmplayer.seekbar.VerticalSeekBar;
-import com.lk.dmplayer.untilily.ApplicationDMPlayer;
 
 /**
  * Created by dlkham on 12/27/2016.

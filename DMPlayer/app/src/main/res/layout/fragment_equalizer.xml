@@ -52,15 +52,16 @@
 
             <com.lk.dmplayer.seekbar.VerticalSeekBar
                 android:id="@+id/slider_1"
-                android:layout_width="20dp"
+                android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@mipmap/eq_scale"
+                android:indeterminateOnly="true"
                 android:max="100"
                 android:progress="0"
-                android:progressDrawable="@drawable/progress_vertical"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/seek_thumb"
-                android:thumbOffset="9dp" />
+                android:thumbOffset="0dp" />
 
             <TextView
                 android:id="@+id/slider_label_1"
@@ -79,15 +80,15 @@
 
             <com.lk.dmplayer.seekbar.VerticalSeekBar
                 android:id="@+id/slider_2"
-                android:layout_width="20dp"
+                android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@mipmap/eq_scale"
                 android:max="100"
                 android:progress="0"
-                android:progressDrawable="@drawable/progress_vertical"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/seek_thumb"
-                android:thumbOffset="9dp" />
+                android:thumbOffset="1dp" />
 
             <TextView
                 android:id="@+id/slider_label_2"
@@ -111,7 +112,6 @@
                 android:layout_weight="1"
                 android:max="100"
                 android:progress="0"
-                android:progressDrawable="@drawable/progress_vertical"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/seek_thumb"
                 android:thumbOffset="9dp" />
@@ -138,7 +138,6 @@
                 android:layout_weight="1"
                 android:max="100"
                 android:progress="0"
-                android:progressDrawable="@drawable/progress_vertical"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/seek_thumb"
                 android:thumbOffset="9dp" />
@@ -165,7 +164,6 @@
                 android:layout_weight="1"
                 android:max="100"
                 android:progress="0"
-                android:progressDrawable="@drawable/progress_vertical"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/seek_thumb"
                 android:thumbOffset="9dp" />
@@ -192,7 +190,6 @@
                 android:layout_weight="1"
                 android:max="100"
                 android:progress="0"
-                android:progressDrawable="@drawable/progress_vertical"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/seek_thumb"
                 android:thumbOffset="9dp" />
@@ -219,7 +216,6 @@
                 android:layout_weight="1"
                 android:max="100"
                 android:progress="0"
-                android:progressDrawable="@drawable/progress_vertical"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/seek_thumb"
                 android:thumbOffset="9dp" />
@@ -246,7 +242,6 @@
                 android:layout_weight="1"
                 android:max="100"
                 android:progress="0"
-                android:progressDrawable="@drawable/progress_vertical"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/seek_thumb"
                 android:thumbOffset="9dp" />
@@ -267,13 +262,13 @@
 
         <TextView
             android:id="@+id/bass_boost_label"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/bass_boost" />
 
         <SeekBar
             android:id="@+id/bass_boost"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="1000"
             android:progress="0"
