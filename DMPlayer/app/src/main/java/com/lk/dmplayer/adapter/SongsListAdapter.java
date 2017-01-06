@@ -1,5 +1,7 @@
 package com.lk.dmplayer.adapter;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.PopupMenu;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.lk.dmplayer.R;
 import com.lk.dmplayer.activities.MainActivity;
+import com.lk.dmplayer.dialog.DialogController;
 import com.lk.dmplayer.fragments.FragmentAllSongs;
 import com.lk.dmplayer.manager.MediaController;
 import com.lk.dmplayer.models.SongDetail;
@@ -34,13 +37,16 @@ public class SongsListAdapter extends BaseAdapter {
     private ArrayList<SongDetail> detailArrayList = new ArrayList<>();
     private long mId = -1;
     private int mType = 0;
+
     public SongsListAdapter(Context context) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
         this.options = new DisplayImageOptions.Builder().showImageOnLoading(R.mipmap.bg_default_album_art).showImageForEmptyUri(R.mipmap.bg_default_album_art).showImageOnFail(R.mipmap.bg_default_album_art).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).bitmapConfig(Bitmap.Config.RGB_565).build();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
     }
+
     private ImageLoader imageLoader = ImageLoader.getInstance();
+
     @Override
     public int getCount() {
         return detailArrayList.size();
@@ -49,6 +55,7 @@ public class SongsListAdapter extends BaseAdapter {
     public void setSongDetail(ArrayList<SongDetail> detailArrayList) {
         this.detailArrayList = detailArrayList;
     }
+
     @Override
     public Object getItem(int i) {
         return null;
@@ -61,7 +68,7 @@ public class SongsListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-       ViewHolder mViewHolder;
+        ViewHolder mViewHolder;
         if (view == null) {
             mViewHolder = new ViewHolder();
             view = mLayoutInflater.inflate(R.layout.inflate_allsongsitem, null);
@@ -89,9 +96,10 @@ public class SongsListAdapter extends BaseAdapter {
         mViewHolder.imageMoreIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(mContext, view);
-                popupMenu.getMenuInflater().inflate(R.menu.list_item_option, popupMenu.getMenu());
-                popupMenu.show();
+//                PopupMenu popupMenu = new PopupMenu(mContext, view);
+//                popupMenu.getMenuInflater().inflate(R.menu.list_item_option, popupMenu.getMenu());
+//                popupMenu.show();
+                onDialogController().show();
             }
         });
         view.setOnClickListener(new View.OnClickListener() {
@@ -117,5 +125,13 @@ public class SongsListAdapter extends BaseAdapter {
         ImageView imageSongThm, imageMoreIcon;
         TextView textViewSongArtisNameAndDuration;
         LinearLayout song_row;
+    }
+
+    public Dialog onDialogController() {
+        LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        View view = mInflater.inflate(R.layout.dialog_controller, null);
+        DialogController dialogController = new DialogController(mContext, view);
+        dialogController.o
+        return dialogController;
     }
 }
