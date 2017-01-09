@@ -1,9 +1,10 @@
-package com.lk.dmplayer.dialog;
+package com.lk.dmplayer.untilily;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,13 +14,15 @@ import com.lk.dmplayer.untilily.DeviceUtil;
 /**
  * Created by dlkham on 1/5/2017.
  */
-public class DialogController extends Dialog {
-    public DialogController(Context context, View view) {
+public class CustomerDialog extends Dialog {
+    public CustomerDialog(Context context, View view, int themeResId) {
         super(context);
-        this.setCanceledOnTouchOutside(false);
+//        this.setCanceledOnTouchOutside(false);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        this.getWindow().setGravity(Gravity.BOTTOM);
         this.setContentView(view);
+        this.getWindow().getAttributes().windowAnimations = themeResId;
         setupDialogSize();
     }
 
@@ -30,14 +33,14 @@ public class DialogController extends Dialog {
         int screenW = DeviceUtil.getScreenWidth(getContext());
         int screenH = DeviceUtil.getScreenHeight(getContext());
         int width = screenW < screenH ? screenW : screenH;
-        width *= 0.9;
-        if (DeviceUtil.isLarge(getContext())) {
-            width *= 0.8;
-        } else if (DeviceUtil.isXLarge(getContext())) {
-            width *= 0.7;
-        }
+//        width *= 0.9;
+//        if (DeviceUtil.isLarge(getContext())) {
+//            width *= 0.8;
+//        } else if (DeviceUtil.isXLarge(getContext())) {
+//            width *= 0.7;
+//        }
         setDialogWidth(width);
-        //setDialogHeight(width);
+//        setDialogHeight(width);
     }
 
     /**

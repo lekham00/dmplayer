@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,8 @@ import android.widget.TextView;
 
 import com.lk.dmplayer.R;
 import com.lk.dmplayer.activities.MainActivity;
-import com.lk.dmplayer.dialog.DialogController;
-import com.lk.dmplayer.fragments.FragmentAllSongs;
+import com.lk.dmplayer.dialog.DialogControllerSong;
+import com.lk.dmplayer.untilily.CustomerDialog;
 import com.lk.dmplayer.manager.MediaController;
 import com.lk.dmplayer.models.SongDetail;
 import com.lk.dmplayer.phonemidea.DMPlayerUtility;
@@ -34,6 +33,7 @@ public class SongsListAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private DisplayImageOptions options;
+    private ImageLoader imageLoader = ImageLoader.getInstance();
     private ArrayList<SongDetail> detailArrayList = new ArrayList<>();
     private long mId = -1;
     private int mType = 0;
@@ -45,7 +45,7 @@ public class SongsListAdapter extends BaseAdapter {
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
     }
 
-    private ImageLoader imageLoader = ImageLoader.getInstance();
+
 
     @Override
     public int getCount() {
@@ -99,7 +99,8 @@ public class SongsListAdapter extends BaseAdapter {
 //                PopupMenu popupMenu = new PopupMenu(mContext, view);
 //                popupMenu.getMenuInflater().inflate(R.menu.list_item_option, popupMenu.getMenu());
 //                popupMenu.show();
-                onDialogController().show();
+                DialogControllerSong dialogControllerSong = new DialogControllerSong(mContext, songDetail);
+                dialogControllerSong.onDialogController().show();
             }
         });
         view.setOnClickListener(new View.OnClickListener() {
@@ -127,11 +128,5 @@ public class SongsListAdapter extends BaseAdapter {
         LinearLayout song_row;
     }
 
-    public Dialog onDialogController() {
-        LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View view = mInflater.inflate(R.layout.dialog_controller, null);
-        DialogController dialogController = new DialogController(mContext, view);
-        dialogController.o
-        return dialogController;
-    }
+
 }

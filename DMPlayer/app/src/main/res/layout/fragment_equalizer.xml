@@ -52,16 +52,15 @@
 
             <com.lk.dmplayer.seekbar.VerticalSeekBar
                 android:id="@+id/slider_1"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
+                android:layout_width="18dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@mipmap/eq_scale"
-                android:indeterminateOnly="true"
                 android:max="100"
                 android:progress="0"
+                android:progressDrawable="@drawable/progress_vertical"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/seek_thumb"
-                android:thumbOffset="0dp" />
+                android:thumbOffset="9dp" />
 
             <TextView
                 android:id="@+id/slider_label_1"
@@ -80,15 +79,15 @@
 
             <com.lk.dmplayer.seekbar.VerticalSeekBar
                 android:id="@+id/slider_2"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
+                android:layout_width="18dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@mipmap/eq_scale"
                 android:max="100"
                 android:progress="0"
+                android:progressDrawable="@drawable/progress_vertical"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/seek_thumb"
-                android:thumbOffset="1dp" />
+                android:thumbOffset="9dp" />
 
             <TextView
                 android:id="@+id/slider_label_2"
@@ -107,12 +106,13 @@
 
             <com.lk.dmplayer.seekbar.VerticalSeekBar
                 android:id="@+id/slider_3"
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
+                android:layout_width="18dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:max="100"
                 android:progress="0"
                 android:secondaryProgress="0"
+                android:progressDrawable="@drawable/progress_vertical"
                 android:thumb="@drawable/seek_thumb"
                 android:thumbOffset="9dp" />
 
@@ -133,12 +133,13 @@
 
             <com.lk.dmplayer.seekbar.VerticalSeekBar
                 android:id="@+id/slider_4"
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
+                android:layout_width="18dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:max="100"
                 android:progress="0"
                 android:secondaryProgress="0"
+                android:progressDrawable="@drawable/progress_vertical"
                 android:thumb="@drawable/seek_thumb"
                 android:thumbOffset="9dp" />
 
@@ -159,12 +160,13 @@
 
             <com.lk.dmplayer.seekbar.VerticalSeekBar
                 android:id="@+id/slider_5"
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
+                android:layout_width="18dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:max="100"
                 android:progress="0"
                 android:secondaryProgress="0"
+                android:progressDrawable="@drawable/progress_vertical"
                 android:thumb="@drawable/seek_thumb"
                 android:thumbOffset="9dp" />
 
@@ -185,12 +187,13 @@
 
             <com.lk.dmplayer.seekbar.VerticalSeekBar
                 android:id="@+id/slider_6"
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
+                android:layout_width="18dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:max="100"
                 android:progress="0"
                 android:secondaryProgress="0"
+                android:progressDrawable="@drawable/progress_vertical"
                 android:thumb="@drawable/seek_thumb"
                 android:thumbOffset="9dp" />
 
@@ -211,11 +214,12 @@
 
             <com.lk.dmplayer.seekbar.VerticalSeekBar
                 android:id="@+id/slider_7"
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
+                android:layout_width="18dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:max="100"
                 android:progress="0"
+                android:progressDrawable="@drawable/progress_vertical"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/seek_thumb"
                 android:thumbOffset="9dp" />
@@ -237,12 +241,13 @@
 
             <com.lk.dmplayer.seekbar.VerticalSeekBar
                 android:id="@+id/slider_8"
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
+                android:layout_width="18dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:max="100"
                 android:progress="0"
                 android:secondaryProgress="0"
+                android:progressDrawable="@drawable/progress_vertical"
                 android:thumb="@drawable/seek_thumb"
                 android:thumbOffset="9dp" />
 

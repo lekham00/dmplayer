@@ -1,22 +1,26 @@
 package com.lk.dmplayer.fragments;
 
+import android.annotation.SuppressLint;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.lk.dmplayer.R;
 import com.lk.dmplayer.manager.MediaController;
+import com.lk.dmplayer.seekbar.VerticalSeekBar;
 
 /**
  * Created by dlkham on 12/27/2016.
@@ -29,7 +33,7 @@ public class FragmentEquilizer extends Fragment implements VerticalSeekBar.OnSee
     SeekBar bass_boost = null;
     CheckBox enabled = null;
     Button flat = null;
-
+    private LinearLayout mLayout;
     Equalizer eq = null;
     BassBoost bb = null;
 
@@ -46,70 +50,75 @@ public class FragmentEquilizer extends Fragment implements VerticalSeekBar.OnSee
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_equalizer, null);
-        enabled = (CheckBox) view.findViewById(R.id.enabled);
-        enabled.setOnCheckedChangeListener(this);
-
-        flat = (Button) view.findViewById(R.id.flat);
-        flat.setOnClickListener(this);
-
-        bass_boost = (SeekBar) view.findViewById(R.id.bass_boost);
-        bass_boost.setOnSeekBarChangeListener(this);
-        bass_boost_label = (TextView) view.findViewById(R.id.bass_boost_label);
-
-        sliders[0] = (VerticalSeekBar) view.findViewById(R.id.slider_1);
-        slider_labels[0] = (TextView) view.findViewById(R.id.slider_label_1);
-        linearLayout_silder[0]= (LinearLayout) view.findViewById(R.id.ll1);
-        sliders[1] = (VerticalSeekBar) view.findViewById(R.id.slider_2);
-        slider_labels[1] = (TextView) view.findViewById(R.id.slider_label_2);
-        linearLayout_silder[1]= (LinearLayout) view.findViewById(R.id.ll2);
-        sliders[2] = (VerticalSeekBar) view.findViewById(R.id.slider_3);
-        slider_labels[2] = (TextView) view.findViewById(R.id.slider_label_3);
-        linearLayout_silder[2]= (LinearLayout) view.findViewById(R.id.ll3);
-        sliders[3] = (VerticalSeekBar) view.findViewById(R.id.slider_4);
-        slider_labels[3] = (TextView) view.findViewById(R.id.slider_label_4);
-        linearLayout_silder[3]= (LinearLayout) view.findViewById(R.id.ll4);
-        sliders[4] = (VerticalSeekBar) view.findViewById(R.id.slider_5);
-        slider_labels[4] = (TextView) view.findViewById(R.id.slider_label_5);
-        linearLayout_silder[4]= (LinearLayout) view.findViewById(R.id.ll5);
-        sliders[5] = (VerticalSeekBar) view.findViewById(R.id.slider_6);
-        slider_labels[5] = (TextView) view.findViewById(R.id.slider_label_6);
-        linearLayout_silder[5]= (LinearLayout) view.findViewById(R.id.ll6);
-        sliders[6] = (VerticalSeekBar) view.findViewById(R.id.slider_7);
-        slider_labels[6] = (TextView) view.findViewById(R.id.slider_label_7);
-        linearLayout_silder[6]= (LinearLayout) view.findViewById(R.id.ll7);
-        sliders[7] = (VerticalSeekBar) view.findViewById(R.id.slider_8);
-        slider_labels[7] = (TextView) view.findViewById(R.id.slider_label_8);
-        linearLayout_silder[7]= (LinearLayout) view.findViewById(R.id.ll8);
-
-        eq = new Equalizer(0, MediaController.getInstance().getMediaPlayer().getAudioSessionId());
-        if (eq != null) {
-            eq.setEnabled(true);
-            int num_bands = eq.getNumberOfBands();
-            num_sliders = num_bands;
-            short r[] = eq.getBandLevelRange();
-            min_level = r[0];
-            max_level = r[1];
-            for (int i = 0; i < num_sliders && i < MAX_SLIDERS; i++) {
-                int freq_range = eq.getCenterFreq((short) i);
-                sliders[i].setOnSeekBarChangeListener(this);
-                slider_labels[i].setText(milliHzToString(freq_range));
-            }
-        }
-        for (int i = num_sliders; i < MAX_SLIDERS; i++) {
-            sliders[i].setVisibility(View.GONE);
-            slider_labels[i].setVisibility(View.GONE);
-            linearLayout_silder[i].setVisibility(View.GONE);
-        }
-
-        bb = new BassBoost(0, MediaController.getInstance().getMediaPlayer().getAudioSessionId());
-        if (bb != null) {
-        } else {
-            bass_boost.setVisibility(View.GONE);
-            bass_boost_label.setVisibility(View.GONE);
-        }
-
-        updateUI();
+        View view = inflater.inflate(R.layout.test, null);
+        mLayout = new LinearLayout(getActivity());
+        mLayout.setOrientation(LinearLayout.VERTICAL);
+        FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.root);
+        frameLayout.addView(mLayout);
+//        enabled = (CheckBox) view.findViewById(R.id.enabled);
+//        enabled.setOnCheckedChangeListener(this);
+//
+//        flat = (Button) view.findViewById(R.id.flat);
+//        flat.setOnClickListener(this);
+//
+//        bass_boost = (SeekBar) view.findViewById(R.id.bass_boost);
+//        bass_boost.setOnSeekBarChangeListener(this);
+//        bass_boost_label = (TextView) view.findViewById(R.id.bass_boost_label);
+//
+//        sliders[0] = (VerticalSeekBar) view.findViewById(R.id.slider_1);
+//        slider_labels[0] = (TextView) view.findViewById(R.id.slider_label_1);
+//        linearLayout_silder[0]= (LinearLayout) view.findViewById(R.id.ll1);
+//        sliders[1] = (VerticalSeekBar) view.findViewById(R.id.slider_2);
+//        slider_labels[1] = (TextView) view.findViewById(R.id.slider_label_2);
+//        linearLayout_silder[1]= (LinearLayout) view.findViewById(R.id.ll2);
+//        sliders[2] = (VerticalSeekBar) view.findViewById(R.id.slider_3);
+//        slider_labels[2] = (TextView) view.findViewById(R.id.slider_label_3);
+//        linearLayout_silder[2]= (LinearLayout) view.findViewById(R.id.ll3);
+//        sliders[3] = (VerticalSeekBar) view.findViewById(R.id.slider_4);
+//        slider_labels[3] = (TextView) view.findViewById(R.id.slider_label_4);
+//        linearLayout_silder[3]= (LinearLayout) view.findViewById(R.id.ll4);
+//        sliders[4] = (VerticalSeekBar) view.findViewById(R.id.slider_5);
+//        slider_labels[4] = (TextView) view.findViewById(R.id.slider_label_5);
+//        linearLayout_silder[4]= (LinearLayout) view.findViewById(R.id.ll5);
+//        sliders[5] = (VerticalSeekBar) view.findViewById(R.id.slider_6);
+//        slider_labels[5] = (TextView) view.findViewById(R.id.slider_label_6);
+//        linearLayout_silder[5]= (LinearLayout) view.findViewById(R.id.ll6);
+//        sliders[6] = (VerticalSeekBar) view.findViewById(R.id.slider_7);
+//        slider_labels[6] = (TextView) view.findViewById(R.id.slider_label_7);
+//        linearLayout_silder[6]= (LinearLayout) view.findViewById(R.id.ll7);
+//        sliders[7] = (VerticalSeekBar) view.findViewById(R.id.slider_8);
+//        slider_labels[7] = (TextView) view.findViewById(R.id.slider_label_8);
+//        linearLayout_silder[7]= (LinearLayout) view.findViewById(R.id.ll8);
+//
+//        eq = new Equalizer(0, MediaController.getInstance().getMediaPlayer().getAudioSessionId());
+//        if (eq != null) {
+//            eq.setEnabled(true);
+//            int num_bands = eq.getNumberOfBands();
+//            num_sliders = num_bands;
+//            short r[] = eq.getBandLevelRange();
+//            min_level = r[0];
+//            max_level = r[1];
+//            for (int i = 0; i < num_sliders && i < MAX_SLIDERS; i++) {
+//                int freq_range = eq.getCenterFreq((short) i);
+//                sliders[i].setOnSeekBarChangeListener(this);
+//                slider_labels[i].setText(milliHzToString(freq_range));
+//            }
+//        }
+//        for (int i = num_sliders; i < MAX_SLIDERS; i++) {
+//            sliders[i].setVisibility(View.GONE);
+//            slider_labels[i].setVisibility(View.GONE);
+//            linearLayout_silder[i].setVisibility(View.GONE);
+//        }
+//
+//        bb = new BassBoost(0, MediaController.getInstance().getMediaPlayer().getAudioSessionId());
+//        if (bb != null) {
+//        } else {
+//            bass_boost.setVisibility(View.GONE);
+//            bass_boost_label.setVisibility(View.GONE);
+//        }
+//
+//        updateUI();
+        setupEqualizeFxAndUi(frameLayout);
         return view;
     }
 
@@ -238,6 +247,92 @@ public class FragmentEquilizer extends Fragment implements VerticalSeekBar.OnSee
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    /**
+     * Returned by mMediaPlayer AudioSessionId to create a priority 0 equalizer object and by spectrum to generate the corresponding UI and the corresponding event
+     */
+    @SuppressLint("NewApi")
+    private void setupEqualizeFxAndUi(FrameLayout frameLayout) {
+        eq = new Equalizer(0, MediaController.getInstance().getMediaPlayer().getAudioSessionId());
+        eq.setEnabled(true);// Enable equalizer
+
+        // The spectrum of the equalizer engine support
+        short bands = eq.getNumberOfBands();
+
+        // GetBandLevelRange is an array, returns a set of spectral class array,
+        // The first subscript for minimum range
+        // The second subscript for maximum limit, turn out
+        final short minEqualizer = eq.getBandLevelRange()[0];
+        final short maxEqualizer = eq.getBandLevelRange()[1];
+
+        for (short i = 0; i < bands; i++) {
+            final short band = i;
+
+            TextView freqTextView = new TextView(getActivity());
+            freqTextView.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.FILL_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            freqTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+
+            // Remove the center frequency
+            freqTextView
+                    .setText((eq.getCenterFreq(band) / 1000) + "HZ");
+            mLayout.addView(freqTextView);
+
+            LinearLayout row = new LinearLayout(getActivity());
+            row.setOrientation(LinearLayout.HORIZONTAL);
+
+            TextView minDbTextView = new TextView(getActivity());
+            minDbTextView.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            minDbTextView.setText((minEqualizer / 100) + " dB");
+
+            TextView maxDbTextView = new TextView(getActivity());
+            maxDbTextView.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            maxDbTextView.setText((maxEqualizer / 100) + " dB");
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.FILL_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            layoutParams.weight = 1;
+
+            SeekBar seekbar = new SeekBar(getActivity());
+            seekbar.setLayoutParams(layoutParams);
+            seekbar.setMax(maxEqualizer - minEqualizer);
+            seekbar.setProgress(eq.getBandLevel(band));
+
+            seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress,
+                                              boolean fromUser) {
+                    // TODO Auto-generated method stub
+                    eq.setBandLevel(band,
+                            (short) (progress + minEqualizer));
+                }
+            });
+            row.addView(minDbTextView);
+            row.addView(seekbar);
+            row.addView(maxDbTextView);
+
+            mLayout.addView(row);
+        }
 
     }
 }

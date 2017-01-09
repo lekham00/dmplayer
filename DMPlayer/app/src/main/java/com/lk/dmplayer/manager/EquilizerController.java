@@ -18,4 +18,9 @@ public class EquilizerController {
         context = context;
         audioSession = audioSession;
     }
+
+    public void ini() {
+        eq = new Equalizer(0, audioSession);
+        bb = new BassBoost(0, audioSession);
+    }
 }

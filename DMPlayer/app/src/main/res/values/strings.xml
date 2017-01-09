@@ -61,4 +61,8 @@
     <string name="enabled">Enabled</string>
     <string name="flat">Flat</string>
     <string name="bass_boost">Bass boost</string>
+
+    <!--dialog controller-->
+    <string name="add_to_playlist">Add To PlayList</string>
+    <string name="delete">Delete</string>
 </resources>
