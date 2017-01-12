@@ -53,7 +53,7 @@ public class FragmentAllSongs extends Fragment {
     public static final String TAG = FragmentAllSongs.class.getSimpleName();
     private ListView recycler_songslist;
     private SongsListAdapter allSongsListAdapter;
-    public static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+
 //    private String alphabet = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 //    private AlphabetIndexer mIndexer;
     private LinearLayout mIndexerLayout;
@@ -64,13 +64,7 @@ public class FragmentAllSongs extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_allsongs, null);
         setupInitialViews(v);
-        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-        } else {
             loadAllSongs();
-        }
         return v;
     }
 

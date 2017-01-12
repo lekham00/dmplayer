@@ -17,6 +17,7 @@ import com.lk.dmplayer.childfragment.ChildFragmentAlbum;
 import com.lk.dmplayer.childfragment.ChildFragmentArtists;
 import com.lk.dmplayer.childfragment.ChildFragmentGenres;
 import com.lk.dmplayer.childfragment.ChildFragmentMostPlay;
+import com.lk.dmplayer.childfragment.ChildFragmentPLayList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
  * Created by Le Kham on 11/30/2016.
  */
 public class FragmentLibrary extends Fragment {
-    public String[] TITLE = {"ALBUMS", "ARTISTS","GENRES","MOSTPLAY"};
+    public String[] TITLE = {"ALBUMS", "ARTISTS","GENRES","MOSTPLAY","PLAYLIST"};
     ViewPager mViewPage;
     TabLayout mTabs;
     @Override
@@ -55,6 +56,7 @@ public class FragmentLibrary extends Fragment {
         myPagerAdapter.addFragment(ChildFragmentArtists.newInstance(getActivity()),TITLE[1]);
         myPagerAdapter.addFragment(ChildFragmentGenres.newInstance(getActivity()),TITLE[2]);
         myPagerAdapter.addFragment(ChildFragmentMostPlay.newInstance(getActivity()),TITLE[3]);
+        myPagerAdapter.addFragment(ChildFragmentPLayList.newInstance(getActivity()),TITLE[4]);
         mViewPage.setAdapter(myPagerAdapter);
     }
     public class MyPagerAdapter extends FragmentStatePagerAdapter {

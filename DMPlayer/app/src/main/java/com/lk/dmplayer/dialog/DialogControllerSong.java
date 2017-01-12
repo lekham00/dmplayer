@@ -25,7 +25,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 public class DialogControllerSong {
     private Context mContext;
     private SongDetail mSongDetail;
-    private TextView textViewSongName, textViewSongArtisNameAndDuration;
+    private TextView mTxtPlayeSongName;
+    private TextView mTxtSongArtistName;
     private ImageView imageSongThm;
     private DisplayImageOptions options;
     private ImageLoader imageLoader = ImageLoader.getInstance();
@@ -47,14 +48,14 @@ public class DialogControllerSong {
     }
 
     private void ini(View view) {
-        textViewSongName = (TextView) view.findViewById(R.id.inflate_allsong_textsongname);
-        textViewSongArtisNameAndDuration = (TextView) view.findViewById(R.id.inflate_allsong_textsongArtisName_duration);
-        imageSongThm = (ImageView) view.findViewById(R.id.inflate_allsong_imgSongThumb);
+        mTxtPlayeSongName = (TextView) view.findViewById(R.id.txt_playesongname);
+        mTxtSongArtistName = (TextView) view.findViewById(R.id.txt_songartistname);
+        imageSongThm = (ImageView) view.findViewById(R.id.img_bottom_slideone);
     }
 
     private void updataData() {
-        textViewSongName.setText(mSongDetail.getTitle());
-        textViewSongArtisNameAndDuration.setText( mSongDetail.getArtist());
+        mTxtPlayeSongName.setText(mSongDetail.getTitle());
+        mTxtSongArtistName.setText( mSongDetail.getArtist());
         String contentURI = "content://media/external/audio/media/" + mSongDetail.getId() + "/albumart";
         imageLoader.displayImage(contentURI, imageSongThm, options);
     }

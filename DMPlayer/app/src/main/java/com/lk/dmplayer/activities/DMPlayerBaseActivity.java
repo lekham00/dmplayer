@@ -1,5 +1,6 @@
 package com.lk.dmplayer.activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -11,9 +12,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -64,13 +67,20 @@ public class DMPlayerBaseActivity extends MainActivity  {
     private RecyclerView recyclerViewDrawer;
     private DrawerAdapter drawerAdapter;
     private String[] arrayTitle;
+    public static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_dmplayerbase);
         super.onCreate(savedInstanceState);
         navigationDrawer();
-        setFragment(0);
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+        } else {
+            setFragment(0);
+        }
     }
 
 
@@ -78,7 +88,7 @@ public class DMPlayerBaseActivity extends MainActivity  {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case FragmentAllSongs.MY_PERMISSIONS_REQUEST_READ_CONTACTS:
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS:
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     setFragment(0);
                 }

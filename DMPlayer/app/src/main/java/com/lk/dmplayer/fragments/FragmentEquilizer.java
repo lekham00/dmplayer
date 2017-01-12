@@ -50,11 +50,11 @@ public class FragmentEquilizer extends Fragment implements VerticalSeekBar.OnSee
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.test, null);
-        mLayout = new LinearLayout(getActivity());
-        mLayout.setOrientation(LinearLayout.VERTICAL);
-        FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.root);
-        frameLayout.addView(mLayout);
+        View view = inflater.inflate(R.layout.fragment_equalizer, null);
+//        mLayout = new LinearLayout(getActivity());
+//        mLayout.setOrientation(LinearLayout.VERTICAL);
+//        FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.root);
+//        frameLayout.addView(mLayout);
 //        enabled = (CheckBox) view.findViewById(R.id.enabled);
 //        enabled.setOnCheckedChangeListener(this);
 //
@@ -118,7 +118,7 @@ public class FragmentEquilizer extends Fragment implements VerticalSeekBar.OnSee
 //        }
 //
 //        updateUI();
-        setupEqualizeFxAndUi(frameLayout);
+//        setupEqualizeFxAndUi(frameLayout);
         return view;
     }
 
