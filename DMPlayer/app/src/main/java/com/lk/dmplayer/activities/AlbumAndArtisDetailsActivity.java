@@ -98,6 +98,8 @@ public class AlbumAndArtisDetailsActivity extends MainActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+            case R.id.action_add:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Created by Le Kham on 11/30/2016.
  */
-public class FragmentLibrary extends Fragment {
+public class FragmentLibrary extends Fragment implements ViewPager.OnPageChangeListener {
     public String[] TITLE = {"ALBUMS", "ARTISTS","GENRES","MOSTPLAY","PLAYLIST"};
     ViewPager mViewPage;
     TabLayout mTabs;
@@ -48,6 +49,7 @@ public class FragmentLibrary extends Fragment {
         setFragment();
         mTabs = (TabLayout) view.findViewById(R.id.tabs);
         mTabs.setupWithViewPager(mViewPage);
+        mViewPage.addOnPageChangeListener(this);
     }
     private void setFragment()
     {
@@ -59,9 +61,26 @@ public class FragmentLibrary extends Fragment {
         myPagerAdapter.addFragment(ChildFragmentPLayList.newInstance(getActivity()),TITLE[4]);
         mViewPage.setAdapter(myPagerAdapter);
     }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        Log.d("AAA",position+"");
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
     public class MyPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
+
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -76,8 +95,7 @@ public class FragmentLibrary extends Fragment {
             return mFragmentList.get(position);
         }
 
-        public void addFragment(Fragment fragment, String title)
-        {
+        public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
