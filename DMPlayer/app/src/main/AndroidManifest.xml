@@ -25,6 +25,8 @@
 
         </activity>
         <activity android:name=".activities.AlbumAndArtisDetailsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".dialog.DialogCreatePlayList"
+            android:theme="@android:style/Theme.Dialog" android:exported="false" />
         <service
             android:name=".manager.MusicPlayerService"
             android:enabled="true"

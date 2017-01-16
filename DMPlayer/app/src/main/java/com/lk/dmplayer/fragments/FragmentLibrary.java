@@ -14,12 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lk.dmplayer.R;
+import com.lk.dmplayer.activities.MainActivity;
 import com.lk.dmplayer.childfragment.ChildFragmentAlbum;
 import com.lk.dmplayer.childfragment.ChildFragmentArtists;
 import com.lk.dmplayer.childfragment.ChildFragmentGenres;
 import com.lk.dmplayer.childfragment.ChildFragmentMostPlay;
 import com.lk.dmplayer.childfragment.ChildFragmentPLayList;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +33,7 @@ public class FragmentLibrary extends Fragment implements ViewPager.OnPageChangeL
     public String[] TITLE = {"ALBUMS", "ARTISTS","GENRES","MOSTPLAY","PLAYLIST"};
     ViewPager mViewPage;
     TabLayout mTabs;
+    MyPagerAdapter myPagerAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +57,7 @@ public class FragmentLibrary extends Fragment implements ViewPager.OnPageChangeL
     }
     private void setFragment()
     {
-        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager());
+        myPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager());
         myPagerAdapter.addFragment(ChildFragmentAlbum.newInstance(getActivity()),TITLE[0]);
         myPagerAdapter.addFragment(ChildFragmentArtists.newInstance(getActivity()),TITLE[1]);
         myPagerAdapter.addFragment(ChildFragmentGenres.newInstance(getActivity()),TITLE[2]);
@@ -69,7 +73,11 @@ public class FragmentLibrary extends Fragment implements ViewPager.OnPageChangeL
 
     @Override
     public void onPageSelected(int position) {
-        Log.d("AAA",position+"");
+        if (myPagerAdapter.getItem(position) instanceof ChildFragmentPLayList) {
+            ((MainActivity) getActivity()).handleActionBarAddToPlayList(true);
+        } else {
+            ((MainActivity) getActivity()).handleActionBarAddToPlayList(false);
+        }
     }
 
     @Override
@@ -80,6 +88,20 @@ public class FragmentLibrary extends Fragment implements ViewPager.OnPageChangeL
     public class MyPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        private Fragment mCurrentFragment;
+
+        public Fragment getCurrentFragment() {
+            return mCurrentFragment;
+        }
+        //...
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            if (getCurrentFragment() != object) {
+                mCurrentFragment = ((Fragment) object);
+            }
+            super.setPrimaryItem(container, position, object);
+        }
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -110,4 +132,5 @@ public class FragmentLibrary extends Fragment implements ViewPager.OnPageChangeL
             return POSITION_NONE;
         }
     }
+
 }

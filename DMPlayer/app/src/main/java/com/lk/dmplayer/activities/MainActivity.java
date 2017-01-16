@@ -1,7 +1,9 @@
 package com.lk.dmplayer.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 
 import com.lk.dmplayer.R;
 import com.lk.dmplayer.db.FavoritePlayTableHelper;
+import com.lk.dmplayer.dialog.DialogCreatePlayList;
 import com.lk.dmplayer.manager.MediaController;
 import com.lk.dmplayer.manager.MusicPreferance;
 import com.lk.dmplayer.manager.NotificationManager;
@@ -67,6 +70,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected SharedPreferences sharedPreferences;
     protected Toolbar mToolbar;
     protected boolean isPanelExpanded;
+    private Menu menu;
+    private boolean mIsShowActionAdd = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -205,7 +210,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         addObserver();
         loadAlreadyPlaying();
         setColorForShuffleAndRepeatAndFav();
-
     }
 
     @Override
@@ -423,10 +427,34 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.activity_main_actions, menu);
-        Drawable yourdrawable = menu.getItem(0).getIcon(); // change 0 with 1,2 ...
+        getMenuItem(R.id.action_add).setVisible(mIsShowActionAdd);
+        Drawable yourdrawable = getMenuItem(R.id.action_add).getIcon(); // change 0 with 1,2 ...
         yourdrawable.mutate();
         yourdrawable.setColorFilter(getResources().getColor(R.color.md_text_white), PorterDuff.Mode.SRC_IN);
         return true;
+    }
+
+    public void handleActionBarAddToPlayList(boolean value) {
+        mIsShowActionAdd = value;
+        supportInvalidateOptionsMenu();
+    }
+
+    private MenuItem getMenuItem(int id) {
+        return menu.findItem(id);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add: {
+                Intent intent = new Intent();
+                intent.setClass(this, DialogCreatePlayList.class);
+                startActivityForResult(intent, 0);
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

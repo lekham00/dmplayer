@@ -157,6 +157,7 @@ public class DMPlayerBaseActivity extends MainActivity  {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        handleActionBarAddToPlayList(false);
                         setFragment(position);
                         if (isPanelExpanded) {
                             mPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
